@@ -1,47 +1,56 @@
 var app=app || {};
-var route=route||{};
-app=(()=>{
+//app=(()=>{
+//	var init=x=>{
+//		onCreate(x);
+//		setContentView();
+//	};
+//	var onCreate=x=>{
+//		app.router.onCreate(x);
+//	};
+//	var setContentView=()=>{
+//		$('#wrapper').empty();
+//		app.algorithm.onCreate()
+//	};
+//	return{
+//		init : init
+//	};
+//})();//IPAI(이파이) 즉시 실행하는 함수
+//ajax
+app =(()=>{
 	var init=x=>{
-		onCreate(x);
-		setContentView(x);
+		$.getScript(x+'/resources/js/router.js',()=>{
+			$.extend(new Router(x));
+			app.algorithm.onCreate();
+		})
 	};
-	var onCreate=x=>{
-		route.init(x);
-	};
-	var setContentView=()=>{
-		alert(route.$());
-		$('#wrapper').empty();
-		app.algorithm.onCreate()
-	};
-	return{
-		init : init
-	};
-})();//IPAI(이파이) 즉시 실행하는 함수
-
+	return {init:init}
+})();
 app.algorithm=(()=>{
+	var $wrapper,context,algorithm,view;
 	var onCreate=()=>{
+		$wrapper =$('#wrapper');
+		context = $.context();
+		algorithm=$.javascript()+'/algorithm.js';
+		view=$.javascript()+'/view.js';
 		setContentView();
 	};
 	var setContentView=()=>{
-		$('#wrapper').html('<h1>Hello AJAX</h1>');
+		$wrapper.empty();
+		$.getScript(view,()=>{
+			$wrapper.append(navigtion());
+				$(createButtonNav1st()).appendTo('#div-nav-list-box')
+				.click(()=>{
+					alert('button 클릭');
+				});
+				var aLogin='<a id="a-login" href="#"> '
+				+'            <span class="glyphicon glyphicon-user" aria-hidden="true">&nbsp;LOGIN</span>'
+				+'           </a>'
+				$('#li-login').append(aLogin);
+				$('#a-login').click(()=>{
+					alert('Login btn Click');
+				});
+		});
+		
 	};
 	return {onCreate:onCreate}
-})();
-app.router=(()=>{
-	var onCreate=()=>{
-		$.getScript()
-	};
-})();
-route=(()=>{
-	var init=x=>{
-		sessionStorage.setItem('x',x);
-	};
-	var onCreate=()=>{};
-	var $=() =>
-	{return sessionStorage.getItem('x');}
-	var setContentView=()=>{};
-	return {
-		init:init,$:$
-		
-			};
 })();

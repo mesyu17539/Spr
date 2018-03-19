@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page session="false" %>
+<c:set var="context" value="<%=request.getContextPath()%>"/>
 <html>
 <head>
 	<title>Home</title>
@@ -15,5 +15,6 @@
 </body>
 </html>
 <script>
+alert('실행');
 	app.init('${context}');
 </script>
