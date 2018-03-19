@@ -52,6 +52,11 @@ function navigtion(){
 	+'      </div>'
 	+'    </nav>';
 }
+function navlogin(){
+	return '<a id="a-login" href="#"> '
+	+'            <span class="glyphicon glyphicon-user" aria-hidden="true">&nbsp;LOGIN</span>'
+	+'           </a>';
+}
 function createButtonNav1st(){
 	return '<button id="btn-nav-list" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" +aria-expanded="false" aria-controls="navbar">'
 	+'          <span class="sr-only">Toggle navigation</span>'

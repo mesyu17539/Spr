@@ -38,15 +38,14 @@ app.algorithm=(()=>{
 		$wrapper.empty();
 		$.getScript(view,()=>{
 			$wrapper.append(navigtion());
-				$(createButtonNav1st()).appendTo('#div-nav-list-box')
+				$(createButtonNav1st())
+				.appendTo('#div-nav-list-box')
 				.click(()=>{
 					alert('button 클릭');
 				});
-				var aLogin='<a id="a-login" href="#"> '
-				+'            <span class="glyphicon glyphicon-user" aria-hidden="true">&nbsp;LOGIN</span>'
-				+'           </a>'
-				$('#li-login').append(aLogin);
-				$('#a-login').click(()=>{
+				$(navlogin())
+				.appendTo('#li-login')
+				.click(()=>{
 					alert('Login btn Click');
 				});
 		});
