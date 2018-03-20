@@ -13,12 +13,6 @@ function navigtion(){
 	+'<nav class="navbar navbar-inverse">'
 	+'      <div class="container-fluid">'
 	+'        <div class="navbar-header"><div id="div-nav-list-box">'
-//	+'          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" +aria-expanded="false" aria-controls="navbar">'
-//	+'          <span class="sr-only">Toggle navigation</span>'
-//	+'            <span class="icon-bar"></span>'
-//	+'            <span class="icon-bar"></span>'
-//	+'            <span class="icon-bar"></span>'
-//	+'          </button>'
 	+'          </div><a class="navbar-brand" href="#">'
 	+'          BITCAMP</a>'
 	+'        </div>'
@@ -64,27 +58,70 @@ var createHTag=(x,y)=>{
 	return '<h'+x+'>'+y+'</h'+x+'>';
 }
 var createDiv=(x,y)=>{
-	return '<div id="'+x+'" class="'+x+'">'+y+'</div>';
+	return '<div id="'+x+'" class="'+y+'"></div>';
+//	return '<div id="'+x+'" class="'+x+'">y</div>';
 }
-function sequenceContext(){
+var createUL=(x,y)=>{
+	return '<ul id="'+x+'" class="'+y+'"></ul>';
+}
+var createLI=(x,y)=>{
+	return '<li id="'+x+'" class="'+y+'"></li>';
+}
+var createText=x=>{
+	return '<span id="'+x+'"></span>';
+}
+var createTabl=(x,y)=>{
+	return '<table id="'+x+'" class="'+y+'"></table>';
+}
+var createTR=x=>{
+	return '<tr id="'+x+'"></tr>';
+}
+var createInputText=(x,y)=>{
+	return '<input id="'+x+'" class="'+y+'" type="text"/>';
+}
+var createTD=x=>{
+	return '<td id="'+x+'"></td>';
+}
+var createInsertTab=(x,y)=>{
+	return '<table id="'+x+'" class="'+y+'">'
+	+'  <tr>'
+	+'    <th>초기값</th>'
+	+'    <td><input id="input-init-val" type="text" name=""></td>'
+	+'  </tr>'
+	+'  <tr>'
+	+'    <th>제한값</th>'
+	+'    <td><input id="input-limit-val"  type="text" name=""></td>'
+	+'  </tr>'
+	+'  <tr>'
+	+'    <th>공차</th>'
+	+'    <td><input id="input-diff-val"  type="text" name=""></td>'
+	+'  </tr>'
+	+'  <tr>'
+	+'    <td>결과값</td>'
+	+'    <td id="resultText"><button id="result">결과값</button></td>'
+	+'  </tr>'
+	+'</table>'
+}
+var sequenceContext=()=>{
 //	'<div class="container" style="margin-top:50px;">'
-	return '<table class=table table-boardered>'
+//	return x+'<table class="table table-boardered">'
+	return '<table id="tab-algo" class="table table-boardered">'
 	+'  <tr>'
 	+'    <th colspan="4">공식</th>'
 	+'    <th>등차수열 답</th>'
 	+'  </tr>'
 	+'  <tr>'
-	+'    <td colspan="4">1-2+3-4+..-100</td>'
-	+'    <td rowspan="4">답안지</td>'
+	+'    <td id="td-algo-arith" colspan="4"></td>'
+	+'    <td id="td-algo-arith-ans">답안지</td>'
 	+'  </tr>'
 	+'  <tr>'
-	+'    <td colspan="4">1+2+4+7+11...</td>'
+	+'    <td id="td-algo-switch" colspan="4"></td>'
 	+'  </tr>'
 	+'  <tr>'
-	+'    <td colspan="4">(-1)*2*(-3)*4*(-5)</td>'
+	+'    <td id="td-algo-gao" colspan="4"></td>'
 	+'  </tr>'
 	+'  <tr>'
-	+'    <td colspan="4">1+1+2+3+5+8+13+...</td>'
+	+'    <td id="td-algo-gi" colspan="4"></td>'
 	+'  </tr>'
 	+'</table>';
 }
