@@ -20,7 +20,7 @@ function navigtion(){
 //	+'            <span class="icon-bar"></span>'
 //	+'          </button>'
 	+'          </div><a class="navbar-brand" href="#">'
-	+'          <img src="'+$.image()+'/logo.jpg" alt="비트캠프"></a>'
+	+'          BITCAMP</a>'
 	+'        </div>'
 	+'        <div id="navbar" class="collapse navbar-collapse">'
 	+'          <ul class="nav navbar-nav">'
@@ -39,23 +39,18 @@ function navigtion(){
 	+'            <span class="caret"></span>'
 	+'          </a>'
 	+'          <ul id="ul-util" class="dropdown-menu">'
-	+'            <li><a>롯또</a></li>'
-	+'            <li><a>햄버거주문</a></li>'
-	+'            <li><a>휴대폰개폰</a></li>'
-	+'            <li><a>게시판</a></li>'
-	+'            <li><a>글쓰기</a></li>'
+	+'            <li id="li-sequence" href="#"></li>'
+	+'            <li id="li-math" href="#"></li>'
+	+'            <li id="li-matrix" href="#"></li>'
+	+'            <li id="li-sort" href="#"></li>'
+	+'            <li id="li-application" href="#"></li>'
 	+'          </ul>'
 	+'        </li>'
 	+'        <!-- 드롭다운 END -->'
 	+'          </ul>'
 	+'        </div>'
 	+'      </div>'
-	+'    </nav>';
-}
-function navlogin(){
-	return '<a id="a-login" href="#"> '
-	+'            <span class="glyphicon glyphicon-user" aria-hidden="true">&nbsp;LOGIN</span>'
-	+'           </a>';
+	+'    </nav>'
 }
 function createButtonNav1st(){
 	return '<button id="btn-nav-list" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" +aria-expanded="false" aria-controls="navbar">'
@@ -64,4 +59,39 @@ function createButtonNav1st(){
 	+'            <span class="icon-bar"></span>'
 	+'            <span class="icon-bar"></span>'
 	+'          </button>';
+}
+var createHTag=(x,y)=>{
+	return '<h'+x+'>'+y+'</h'+x+'>';
+}
+var createDiv=(x,y)=>{
+	return '<div id="'+x+'" class="'+x+'">'+y+'</div>';
+}
+function sequenceContext(){
+//	'<div class="container" style="margin-top:50px;">'
+	return '<table class=table table-boardered>'
+	+'  <tr>'
+	+'    <th colspan="4">공식</th>'
+	+'    <th>등차수열 답</th>'
+	+'  </tr>'
+	+'  <tr>'
+	+'    <td colspan="4">1-2+3-4+..-100</td>'
+	+'    <td rowspan="4">답안지</td>'
+	+'  </tr>'
+	+'  <tr>'
+	+'    <td colspan="4">1+2+4+7+11...</td>'
+	+'  </tr>'
+	+'  <tr>'
+	+'    <td colspan="4">(-1)*2*(-3)*4*(-5)</td>'
+	+'  </tr>'
+	+'  <tr>'
+	+'    <td colspan="4">1+1+2+3+5+8+13+...</td>'
+	+'  </tr>'
+	+'</table>';
+}
+var createATag=x=>{
+	return '<a href="#"> '+x+'</a>';
+}
+var createSpan=(x,y)=>{
+	return '<span class="glyphicon '+x+'" aria-hidden="true">&nbsp;'
+	+y+'</span>';
 }
