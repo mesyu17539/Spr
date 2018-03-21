@@ -70,11 +70,61 @@ var createLI=(x,y)=>{
 var createText=x=>{
 	return '<span id="'+x+'"></span>';
 }
-var createTabl=(x,y)=>{
-	return '<table id="'+x+'" class="'+y+'"></table>';
+var createTab=(x,y,json,txt,type)=>{
+	var tab='<table id="'+x+'" class="'+y+'">'
+			+'<tr>'
+				+'<th colspan="5">'+txt+'</th>'
+			+'</tr>';
+	$.each(json,function(i,j){
+		tab +='<tr>'
+			+'<td>('+i+')'+j.a+'</td>'
+			+'<td>('+i+')'+j.b+'</td>'
+			+'<td>('+i+')'+j.c+'</td>'
+			+'<td>('+i+')'+j.d+'</td>'
+			+'<td>('+i+')'+j.e+'</td>'
+			+'</tr>'
+	});
+	tab+='</table>';
+	return tab;
+}
+var createMathTab=(x, y, json, txt)=>{
+	var tab = '<table id="'+x+'" class="table table-'+y+'">'
+	+'<tr>'
+	+'<th colspan="5">' + txt + '</th>'
+	+'</tr>';
+	$.each(JSON.parse(json), (i, j)=>{
+		tab +='<tr>'
+			+'<td>'+j.a+'</td>'
+			+'<td>'+j.b+'</td>'
+			+'<td>'+j.c+'</td>'
+			+'<td>'+j.d+'</td>'
+			+'<td>'+j.e+'</td>'
+			+'</tr>';
+	});
+	tab += '</table>';
+	return tab;
+}
+var createMetrixTab=(x,y,json,txt)=>{
+	var tab='<table id="'+x+'" class="table table-'+y+'">'
+	+'<tr>'
+	+'<th colspan="5">' + txt + '</th>'
+	+'</tr>';
+	$.each(json,(i,j)=>{
+		tab +='<tr>'
+			+'<td><a id="a-'+i+'">'+i+'.'+j+'</a></td>';
+			if(i==0){
+				tab +='<td id="result" rowspan="'+(json.length+1)+'">취중진담</td>'
+			}
+			tab +='</tr>';
+	});
+	tab+='</table>';
+	return tab;
 }
 var createTR=x=>{
-	return '<tr id="'+x+'"></tr>';
+	return '<tr>'+x+'</tr>';
+}
+var createTH=x=>{
+	return '<th id="'+x+'"></th>';
 }
 var createInputText=(x,y)=>{
 	return '<input id="'+x+'" class="'+y+'" type="text"/>';
@@ -122,6 +172,12 @@ var sequenceContext=()=>{
 	+'  </tr>'
 	+'  <tr>'
 	+'    <td id="td-algo-gi" colspan="4"></td>'
+	+'  </tr>'
+	+'  <tr>'
+	+'    <td id="td-algo-pibo" colspan="4"></td>'
+	+'  </tr>'
+	+'  <tr>'
+	+'    <td id="td-algo-fac" colspan="4"></td>'
 	+'  </tr>'
 	+'</table>';
 }

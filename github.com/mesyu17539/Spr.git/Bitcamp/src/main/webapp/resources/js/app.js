@@ -64,7 +64,7 @@ app.algorithm=(()=>{
 							})
 							.append(sequenceContext());
 							
-							$('#td-algo-arith').html($(createATag('1-2+3-4+..-100'))
+							$('#td-algo-arith').html($(createATag('등차수열의 합 : 1+2+3+4+..+100'))
 									.attr('style','margin-top:50px')
 									.on('click',()=>{
 								$('#td-algo-arith-ans').html(createInsertTab());
@@ -74,12 +74,18 @@ app.algorithm=(()=>{
 										var x=$('#input-init-val').val();
 										var y=$('#input-limit-val').val();
 										var z=$('#input-diff-val').val();
-										$.getScript(algo,()=>{
-											$('#resultText').text(arith(x,y,z));
+										if(x!==''&&x>0
+												&&y!==''&&y>0
+												&&z!==''&&z>0){
+											$.getScript(algo,()=>{
+												$('#resultText').text(arith(x,y,z));
+											});
+										}else{
+											alert('값을 넣어 주세요');
+										}
 									});
-								});
 							}));
-							$('#td-algo-gao').html($(createATag('(-1)*2*(-3)*4*(-5)')).click(()=>{
+							$('#td-algo-switch').html($(createATag('스위치 수열의 합 : 1-2+3-4+..-100')).click(()=>{
 								$('#td-algo-arith-ans').html(createInsertTab());
 									$('#result')
 									.attr('style','margin-top:50px;margin-left:100px;width:200px;')
@@ -87,27 +93,127 @@ app.algorithm=(()=>{
 										var x=$('#input-init-val').val();
 										var y=$('#input-limit-val').val();
 										var z=$('#input-diff-val').val();
-										$.getScript(algo,()=>{
-											$('#resultText').text('알고');
-										});
+										if(x!==''&&x>0
+												&&y!==''&&y>0
+												&&z!==''&&z>0){
+											$.getScript(algo,()=>{
+												$('#resultText').text(switchSeq(x,y,z));
+											});
+										}else{
+											alert('값을 넣어 주세요');
+										}
 									});
 							}));
-							$('#td-algo-switch').html('1+2+4+7+11...');
-							$('#td-algo-gi').html('1+1+2+3+5+8+13+...');
-//							$('#td-algo-gi').text('1+1+2+3+5+8+13+...');
+							$('#td-algo-gi').html($(createATag('등비수열의 합 : 2+6+18+54+162 = 242')).click(()=>{
+								$('#td-algo-arith-ans').html(createInsertTab());
+								$('#result')
+								.attr('style','margin-top:50px;margin-left:100px;width:200px;')
+								.on('click',()=>{
+									var x=$('#input-init-val').val();
+									var y=$('#input-limit-val').val();
+									var z=$('#input-diff-val').val();
+									if(x!==''&&x>0
+											&&y!==''&&y>0
+											&&z!==''&&z>0){
+										$.getScript(algo,()=>{
+											$('#resultText').text(gioSeq(x,y,z));
+										});
+									}else{
+										alert('값을 넣어 주세요');
+									}
+								});
+						}));
+							$('#td-algo-gao').html($(createATag('팩토리의 합 : 1!+2!+3!+...')).click(()=>{
+								$('#td-algo-arith-ans').html(createInsertTab());
+								$('#result')
+								.attr('style','margin-top:50px;margin-left:100px;width:200px;')
+								.on('click',()=>{
+									var x=$('#input-init-val').val();
+									var y=$('#input-limit-val').val();
+									var z=$('#input-diff-val').val();
+									if(x!==''&&x>0
+											&&y!==''&&y>0
+											&&z!==''&&z>0){
+										$.getScript(algo,()=>{
+											$('#resultText').text(gioSeq(x,y,z));
+										});
+									}else{
+										alert('값을 넣어 주세요');
+									}
+								});
+							}));
+							$('#td-algo-pibo').html($(createATag('피보나치 수열의 합 : 1+1+2+3+5+8+13...')).click(()=>{
+								$('#td-algo-arith-ans').html(createInsertTab());
+								$('#result')
+								.attr('style','margin-top:50px;margin-left:100px;width:200px;')
+								.on('click',()=>{
+									var x=$('#input-init-val').val();
+									var y=$('#input-limit-val').val();
+									if(x!==''&&x>0
+											&&y!==''&&y>0){
+										$.getScript(algo,()=>{
+											$('#resultText').text(piboSeq(x,y));
+										});
+									}else{
+										alert('값을 넣어 주세요');
+									}
+								});
+							}));
+//							td-algo-fac
 							
+//							$('#td-algo-gi').text('(-1)*2*(-3)*4*(-5)...');
 				});
-				$('수학')
+				$(createATag('수학'))
 				.appendTo('#li-math')
 				.click(()=>{
-					alert('수학');
-//					$contexts.html(createDiv('container',sequenceContext()))
+					$.getScript(algo,()=>{
+						$contexts
+						.html($(createDiv('content','container')));
+						$('#content')
+						.css({'margin-top':'50px',
+							'width':'80%'
+						})
+						.append($(createMathTab('test','boardered',findMath(),'수학')));
+						for(;;){
+							$('#td-'+i)
+							.attr('style','margin-top:50px;margin-left:100px;width:200px;')
+							.on('click',()=>{
+								var x=$('#input-init-val').val();
+								var y=$('#input-limit-val').val();
+								if(x!==''&&x>0
+										&&y!==''&&y>0){
+									$.getScript(algo,()=>{
+										$('#resultText').text(piboSeq(x,y));
+									});
+								}else{
+									alert('값을 넣어 주세요');
+								}
+							});
+						}
+					});
 				});
-				$(createATag('배열'))
+				$(createATag('배열'))	
 				.appendTo('#li-matrix')
 				.click(()=>{
 					alert('배열');
-//					$contexts.html(createDiv('container',sequenceContext()))
+					$.getScript(algo,()=>{
+						$contexts
+						.html($(createDiv('content','container')));
+						$('#content')
+						.css({'margin-top':'50px',
+							'width':'80%'
+						})
+						.append($(createMetrixTab('test','boardered', findBymetrix(),'배열')));
+						alert(findBymetrix().length);
+						$.each(['선택','버블','삽입','석차','이분','병합','스택'],(i,j)=>{
+							$('#a-'+i)
+							.on('click',()=>{
+								// j를 이용해 메소드 정할겁니닷!!
+								$('#result').html(createInsertTab());
+							});
+							
+						});
+					});
 				});
 				$(createATag('정렬'))
 				.appendTo('#li-sort')
@@ -118,8 +224,7 @@ app.algorithm=(()=>{
 				$(createATag('응용'))
 				.appendTo('#li-application')
 				.click(()=>{
-					alert('응용');
-//					$contexts.html(createDiv('container',sequenceContext()))
+					
 				});
 		});
 		

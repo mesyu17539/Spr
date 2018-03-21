@@ -1,108 +1,17 @@
-/* menu Img */
-.navbar-brand {
-    padding-top: 0px;
-   
-}
-#content{
-	margin-top: 220px;
-}
-#footer{
-	height: 20px; margin-top: -20px;
-}
-
- /* Magnific Popup by default doesn’t apply any styles to it, except vertical centering */
-.white-popup {
-  position: relative;
-  background: #FFF;
-  padding: 20px;
-  width: auto;
-  max-width: 1000px;
-  margin: 20px auto;
-}
-/* common */
-*{margin:0px; padding: 0px;}
-#centier{margin: 0 auto; text-align: center;}
-h1{font : bold 20px verdana, sans-serif; }
-h2{font: bold 14px verdana, sns-serif;}
-header, section, footer, aside, nav, article, figure, figcaption,
-	hgroup{display: block}
-table, tr, td, th{border-collapse: collapse; text-align: center;}
-body{text-align: center;}
-a{text-decoration: none; color: #0000a0;}
-#wrapper{width: 100%;margin: 0 auto;text-align: left;
-	min-height: calc(100vh - 170px);
-}
-#header{height: 20%;width: 100%;}
-#nav{background: #000000; padding: 5px 0px; width: 100%; 
-	margin-bottom: 20px;}
-	#nav li{ width: 200px;text-align: center; display: inline-block;list-style: none; padding: 2px;}
-	#nav li a{color: white;font: bold 14px verdana, sans-serif;}
-
-/* Login */
 @charset "UTF-8";
-#index_header{width: 100%;height: 50px;text-align: center;}
-#index_table{width: 80%;margin: 0 auto; margin-top: 200px;}
-#index_login_box{width: 300px;margin: 0 auto;}
-#index_input_id{width: 180px; height: 45px;}
-#index_input_password{width: 180px; height: 45px;}
-#index_input_btn{width: 100px; height: 100px;}
-
-/* kabank */
-body{width:90%; margin: 0 auto;}
-#bitc_section{padding:10px;height: 600px; width: 75%; border-style: ridge; border-width: 1px;margin: 0 auto;}
-#kakao_table{border-collapse: collapse; width: 99%; border-style: solid; border-width: 1px;}
-#bitca_table{border-collapse: collapse; width: 99%; border-style: solid; border-width: 1px;}
-#bitc_table tr th, td{height: 40px; border-right-style:solid; border-width:1px;}
-#bitc_table tr th{height: 30px; border-top-style:solid; border-bottom-style:solid; border-width:1px;}
-.shema{width: 15%; background:lightgray; }
-
-
-/* bugerking */
-#bkmenu_header{width: 80%;margin: 0 auto; text-align: center;}
-#bkmenu_table{width: 400px;margin: 0 auto; margin-top: 50px;}
-#bkmenu_input_btn{width: 20%; height: 100%;}
-#bkmenu_table tr td img{width: 150px; height: 150px;}
-
-/* bitcamp */
-body{width:90%; margin: 0 auto;}
-#bitc_section{padding:10px;height: 600px; width: 75%; border-style: ridge; border-width: 1px;margin: 0 auto;}
-#bitc_table{border-collapse: collapse; width: 99%; border-style: solid; border-width: 1px;}
-#bitca_table{border-collapse: collapse; width: 99%; border-style: solid; border-width: 1px;}
-#bitc_table tr th, td{height: 40px; border-right-style:solid; border-width:1px;}
-#bitc_table tr th{height: 30px; border-top-style:solid; border-bottom-style:solid; border-width:1px;}
-.shema{width: 15%; background:lightgray; }
-
-/* admin */
-body{width:90%; margin: 0 auto;}
-#admin_section{padding:10px;height: 650px; width: 75%; border-style: ridge; border-width: 1px;margin: 0 auto;}
-#admin_aside{width: 10%;height: 670px; float: left; border-style: solid; border-width: 1px;}
-#admin_table{border-collapse: collapse; height: 95%; width: 99%; border-style: solid; border-width: 1px;}
-#admin_table tr td{padding:1px; width:200px;border-style: solid; border-width: 1px;}
-#admin_button{width: 80%;height: 80%;}
-
-/* admin member */
-body{width:90%; margin: 0 auto;}
-#admin_section{padding:10px;height: 650px; width: 75%; border-style: ridge; border-width: 1px;margin: 0 auto;}
-#admin_aside{width: 10%;height: 670px; float: left; border-style: solid; border-width: 1px;}
-#admin_table{border-collapse: collapse; width: 99%; border-style: solid; border-width: 1px;}
-#admin_table tr td{height: 30px; border-style: solid; border-width: 1px;}
-#admin_table tr th{height: 40px;}
-
-/* admin add member */
-body{width:90%; margin: 0 auto;}
-#admin_section{padding-top:184px;height: 486px; width: 75%; border-style: solid; border-width: 1px;margin: 0 auto;}
-#admin_aside{width: 10%;height: 670px; float: left; border-style: solid; border-width: 1px;}
-#admin_table{width: 99%;}
-#admin_table tr td{height: 0px;}
-#admin_table tr th{height: 40px;}
-
-/* member */
-#join_header{width: 80%;margin: 0 auto; text-align: center;}
-#join_table{width: 500px; height:300px; margin: 0 auto; margin-top: 50px; border-width: 2px; border-style: solid;}
-#join_table td{ border-width: 1px; border-style: ridge; text-align: left;}
-#join_btn{width: 14%; height: 100%;}
-#join_text{width: 140px;}
-#join_clear{width: 14%; height: 100%;}
-
-/* board */
-#tab-board-list{width: 80%; height:300px; margin: 0 auto; margin-top: 50px; border-width: 2px; border-style: solid;}
+.border-solid{
+	
+}
+.tab-algo-findByfive{
+	width:100%;border:1px solid black;margin:0 auto
+}
+.tab-algo-findByfive tr{
+	border:1px solid black;margin:0 auto
+}
+.tab-algo-findByfive tr th{
+	text-align: center;
+}
+.tab-algo-findByfive tr td{
+	border:1px solid black;margin:0 auto;
+	text-align: center;
+}
