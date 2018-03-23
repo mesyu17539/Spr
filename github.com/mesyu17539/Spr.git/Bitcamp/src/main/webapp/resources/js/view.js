@@ -111,9 +111,9 @@ var createMetrixTab=(x,y,json,txt)=>{
 	+'</tr>';
 	$.each(json,(i,j)=>{
 		tab +='<tr>'
-			+'<td><a id="a-'+i+'">'+i+'.'+j+'</a></td>';
+			+'<td style="width:50%"><a id="a-'+i+'">'+i+'. '+j+'</a></td>';
 			if(i==0){
-				tab +='<td id="result" rowspan="'+(json.length+1)+'">취중진담</td>'
+				tab +='<td style="width:50%" id="result" rowspan="'+(json.length+1)+'">테스트</td>'
 			}
 			tab +='</tr>';
 	});
@@ -132,8 +132,11 @@ var createInputText=(x,y)=>{
 var createTD=x=>{
 	return '<td id="'+x+'"></td>';
 }
-var createInsertTab=(x,y)=>{
-	return '<table id="'+x+'" class="'+y+'">'
+var createInputThrTab=x=>{
+	return '<table>'
+	+'<tr>'
+	+'<th colspan="5">' + x + '</th>'
+	+'</tr>'
 	+'  <tr>'
 	+'    <th>초기값</th>'
 	+'    <td><input id="input-init-val" type="text" name=""></td>'
@@ -148,7 +151,41 @@ var createInsertTab=(x,y)=>{
 	+'  </tr>'
 	+'  <tr>'
 	+'    <td>결과값</td>'
-	+'    <td id="resultText"><button id="result">결과값</button></td>'
+	+'    <td id="resultText"><button id="resultbtn">결과값</button></td>'
+	+'  </tr>'
+	+'</table>'
+}
+var createInputTwoTab=x=>{
+	return '<table>'
+	+'<tr>'
+	+'<th colspan="5">' + x + '</th>'
+	+'</tr>'
+	+'  <tr>'
+	+'    <th>첫번째 값</th>'
+	+'    <td><input id="input-init-val" type="text" name=""></td>'
+	+'  </tr>'
+	+'  <tr>'
+	+'    <th>두번째 값</th>'
+	+'    <td><input id="input-limit-val"  type="text" name=""></td>'
+	+'  </tr>'
+	+'  <tr>'
+	+'    <td>결과값</td>'
+	+'    <td id="resultText"><button id="resultbtn">결과값</button></td>'
+	+'  </tr>'
+	+'</table>'
+}
+var createInputOneTab=x=>{
+	return '<table>'
+	+'<tr>'
+	+'<th colspan="5">' + x + '</th>'
+	+'</tr>'
+	+'  <tr>'
+	+'    <th>입력할 숫자</th>'
+	+'    <td><input id="input-init-val" type="text" name=""></td>'
+	+'  </tr>'
+	+'  <tr>'
+	+'    <td>결과값</td>'
+	+'    <td id="resultText"><button id="resultbtn">결과값</button></td>'
 	+'  </tr>'
 	+'</table>'
 }
