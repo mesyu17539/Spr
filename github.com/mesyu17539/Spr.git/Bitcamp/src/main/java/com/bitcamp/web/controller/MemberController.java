@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 	private static final Logger logger=LoggerFactory.getLogger(MemberController.class);
 
+	
 	@RequestMapping(value="/login",
 			method=RequestMethod.POST,
 			consumes="application/json")
