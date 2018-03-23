@@ -21,6 +21,7 @@ app =(()=>{
 		$.getScript(x+'/resources/js/router.js',()=>{
 			$.extend(new Router(x));
 			app.algorithm.onCreate();
+			app.member.onCreate();
 		})
 	};
 	return {init:init}
@@ -29,21 +30,56 @@ app.member=(()=>{
 	var $wrapper,context,algorithm,view,iamge;
 	var onCreate=()=>{
 		$wrapper =$('#wrapper');
-		$contexts =$('#contexts');
 		context = $.context();
 		algo=$.javascript()+'/algo.js';
 		view=$.javascript()+'/view.js';
 		setContentView();
-		var setContentView=()=>{
-			
-		};
 	};
+	var setContentView=()=>{
+		$.getScript(view,()=>{
+//			$wrapper.append(loginp('login-outer-table'));
+			$(createDiv('container','login-contanier'))
+			.attr('style','width:100%;height:500px;border:2px solid red')
+			.appendTo($wrapper);
+			$(createDiv('content','login-content'))
+			.attr('style','width:40%;height:300px;border:2px solid blue;margin:50px auto')
+			.appendTo('#container');
+			$(loginOutBox('login-inner-table'))
+			.appendTo('#content');
+			$(loginInBox('login-inner-table'))
+			.appendTo('#inbox-position');
+			$(createButton("login-btn","default","Login"))
+			.appendTo('#div-login-btn')
+			.on('click',e=>{
+				e.preventDefault();//없으면 입력된값만 가져가므로 처리해야함.
+				var jason={
+                        'id' : $('#index_input_id').val(),
+                        'pass' : $('#index_input_password').val()};
+				$.ajax({
+					url:context+'/member/login',
+					method:'POST',
+					data:JSON.stringify(jason),
+					dataType:'json',
+					contentType:'application/json',
+					success:x=>{
+						alert('로그인성공'+x.flag)
+					},
+					error:(x,h,m)=>{
+						alert('로그인에서 에러 x='+x+',h='+h+',m='+m);
+					}
+				});
+			});
+		});
+	};
+	var login=()=>{
+		
+	};
+	return {onCreate : onCreate}
 })();
 app.algorithm=(()=>{
 	var $wrapper,context,algorithm,view,iamge;
 	var onCreate=()=>{
 		$wrapper =$('#wrapper');
-		$contexts =$('#contexts');
 		context = $.context();
 		algo=$.javascript()+'/algo.js';
 		view=$.javascript()+'/view.js';
@@ -65,13 +101,15 @@ app.algorithm=(()=>{
 				.click(()=>{
 					alert('Login btn Click');
 				});
+			
 				$(createATag('수열'))
 				.appendTo('#li-sequence')
 				.click(()=>{
 //					오버로딩
 					alert('알고리즘');
-						$contexts
-							.html($(createDiv('content','container')));
+					$('#container').empty();
+					$('#container')
+							.html($(createDiv('content','content')));
 							$('#content')
 							.css({'margin-top':'50px',
 								'width':'80%'
@@ -181,7 +219,7 @@ app.algorithm=(()=>{
 				.appendTo('#li-math')
 				.click(()=>{
 					$.getScript(algo,()=>{
-						$contexts
+						$('#container')
 						.html($(createDiv('content','container')));
 						$('#content')
 						.css({'margin-top':'50px',
@@ -390,7 +428,7 @@ app.algorithm=(()=>{
 				.click(()=>{
 					alert('배열');
 					$.getScript(algo,()=>{
-						$contexts
+						$('#container')
 						.html($(createDiv('content','container')));
 						$('#content')
 						.css({'margin-top':'50px',
@@ -454,7 +492,7 @@ app.algorithm=(()=>{
 				.appendTo('#li-sort')
 				.click(()=>{
 					alert('정렬');
-//					$contexts.html(createDiv('container',sequenceContext()))
+//					$('#container').html(createDiv('container',sequenceContext()))
 				});
 				$(createATag('응용'))
 				.appendTo('#li-application')

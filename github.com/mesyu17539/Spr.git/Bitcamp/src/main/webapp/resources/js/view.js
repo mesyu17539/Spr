@@ -1,3 +1,38 @@
+var createButton=(x,y,z)=>{
+	return  '<button type ="button" id="'+x+'" class="btn '+y+'">'+z+'</button>';
+}
+var loginOutBox=(x)=>{
+	return '<table class="'+x+'">'
+	+'      <tr>'
+	+'			<td id="inbox-position"></td>'
+	+'      </tr>'
+	+'      <tr>'
+	+'        <td>'
+	+'        <a id="go_join_link" href="#">'
+	+'          처음 오셨나요 '
+	+'        </a>'
+	+'        <a id="go_admin_link" href="#">'
+	+'          관리자'
+	+'        </a>'
+	+'        </td>'
+	+'      </tr>'
+	+'</table>'
+}
+var loginInBox=(x)=>{
+	return '<table class="'+x+'">'
+	+'            <tr>'
+	+'              <td><input id="index_input_id" name="id" type="text" placeholder="id" tabindex="1" value="ㅊㅊㅊ"/></td>'
+	+'              <td rowspan="2"><div id="div-login-btn"></div></td>'
+	+'            </tr>'
+	+'            <tr>'
+	+'              <td><input id="index_input_password" name="pass" type="password" placeholder="pass" tabindex="2" value="ccc"/>'
+	+'              <input type="hidden" name="cmd" value="login" />'
+	+'              <input type="hidden" name="dir" value="user" />'
+	+'              <input type="hidden" name="page" value="mypage" />'
+	+'              </td>'
+	+'            </tr>'
+	+'          </table>'
+}
 function navigtion(){
 	return '<style>'
 	+'  .jumbotron {'

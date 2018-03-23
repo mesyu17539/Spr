@@ -20,6 +20,5 @@
 </body>
 </html>
 <script>
-alert('실행');
 	app.init('${context}');
 </script>
