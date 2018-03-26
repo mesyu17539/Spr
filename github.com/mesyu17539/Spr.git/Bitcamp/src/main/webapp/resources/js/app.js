@@ -61,12 +61,21 @@ app.member=(()=>{
 					data:JSON.stringify(jason),
 					dataType:'json',
 					contentType:'application/json',
-					success:x=>{
-						alert('로그인성공'+x.flag)
-					},
-					error:(x,h,m)=>{
-						alert('로그인에서 에러 x='+x+',h='+h+',m='+m);
-					}
+					success : x =>{
+                        alert('로그인');
+                        if(x.success==='1'){
+                        	alert('로그인 성공');
+                            var jason = {
+                                    id : x.user.id
+                            };
+//                            mypage(jason);
+                        }else{
+                            alert('로그인 실패');
+                        }
+                    },
+                    error : (x,h,m)=>{
+                        alert('로그인에서 에러발생 x='+x+', h='+h+', m='+m);
+                    }
 				});
 			});
 		});

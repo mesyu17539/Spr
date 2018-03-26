@@ -5,6 +5,6 @@ import org.springframework.stereotype.Service;
 import com.bitcamp.web.domain.Command;
 
 @Service
-public interface UpdateService {
-	public void excute(Command cmd);
+public interface ICountService {
+	public int excute(Command cmd);
 }
