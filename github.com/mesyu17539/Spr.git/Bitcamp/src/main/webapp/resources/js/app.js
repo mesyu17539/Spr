@@ -22,12 +22,30 @@ app =(()=>{
 			$.extend(new Router(x));
 			app.algorithm.onCreate();
 			app.member.onCreate();
+			app.board.onCreate();
 		})
 	};
 	return {init:init}
 })();
+app.board=(()=>{
+	var onCreate=()=>{
+		algo=$.javascript()+'/algo.js';
+		view=$.javascript()+'/view.js';
+		setContentView();
+	};
+	var setContentView=()=>{
+		$.getScript(view,()=>{
+			$(createATag({val:createSpan({clazz:'glyphicon-blackboard',val:'보드'})}))
+			.appendTo('#li-board')
+			.click(()=>{
+				alert('보드 btn Click');
+				$('#container').html('빠꿔');
+			});
+		});
+	};
+	return {onCreate:onCreate}
+})();
 app.member=(()=>{
-	var $wrapper,context,algorithm,view,iamge;
 	var onCreate=()=>{
 		$wrapper =$('#wrapper');
 		context = $.context();
@@ -38,17 +56,14 @@ app.member=(()=>{
 	var setContentView=()=>{
 		$.getScript(view,()=>{
 //			$wrapper.append(loginp('login-outer-table'));
-			$(createDiv('container','login-contanier'))
-			.attr('style','width:100%;height:500px;border:2px solid red')
-			.appendTo($wrapper);
-			$(createDiv('content','login-content'))
-			.attr('style','width:40%;height:300px;border:2px solid blue;margin:50px auto')
+			$(createDiv({id:'content',clazz:'login-content'}))
+			.attr('style','width:60%;height:400px;border:2px solid blue;margin:50px auto')
 			.appendTo('#container');
 			$(loginOutBox('login-inner-table'))
 			.appendTo('#content');
 			$(loginInBox('login-inner-table'))
 			.appendTo('#inbox-position');
-			$(createButton("login-btn","default","Login"))
+			$(createButton({id:"login-btn",clazz:"default",val:"Login"}))
 			.appendTo('#div-login-btn')
 			.on('click',e=>{
 				e.preventDefault();//없으면 입력된값만 가져가므로 처리해야함.
@@ -64,11 +79,17 @@ app.member=(()=>{
 					success : x =>{
                         alert('로그인');
                         if(x.success==='1'){
-                        	alert('로그인 성공');
+//                        	var jason = x.user; //추가 할게 없다면 주석 풀며 토스.
                             var jason = {
-                                    id : x.user.id
-                            };
-//                            mypage(jason);
+                                    'id' : x.user.id,
+                                    'name':x.user.name,
+                                    'ssn':x.user.ssn,
+                                    'phone':x.user.phone,
+                                    'email':x.user.email,
+                                    'addr':x.user.addr,
+                                    'pass' : x.user.pass,
+                                    'profile':x.user.profile};
+                            mypage(jason);
                         }else{
                             alert('로그인 실패');
                         }
@@ -80,9 +101,52 @@ app.member=(()=>{
 			});
 		});
 	};
-	var login=()=>{
+	var login=x=>{
 		
 	};
+	var mypage=x=>{
+		alert('mypage id = '+x.id);
+		$.getScript(view,()=>{
+			$('#container').empty();
+			$(createDiv({id:'content',clazz:'login-content'}))
+			.attr('style','width:80%;height:400px;border:2px solid blue;margin:50px auto')
+			.appendTo('#container');
+			$('#content')
+			.append(createDiv({id:'biro',clazz:'row'}));
+			$('#biro').append(createDiv({id:'colImg',clazz:'col-sm-2'})+createDiv({id:'colTables',clazz:'col-sm-10'}));
+			$('#colImg').append(createDiv({id:'img',clazz:'table table-bordered'}));
+			$('#img').append('<img src="'+$.image()+'/'+x.profile+'.jpg" width="170px" height="170px" alt="" />');
+			//테이블 생성
+			$('#colTables').append(makingT({clazz:'table table-bordered',jason:x,num:2}));
+			$('#th-profile').remove();
+			$('#td-profile').remove();
+			$('#th-pass').remove();
+			$('#td-pass').remove();
+//			.append(makingTable('table table-bordered','MYPAGE'));
+//			$('#a2').remove();
+//			$('#a3').remove();
+//			$('#a4').append('<a id="openPhone" href="#">'+x.name+'</a>')
+//			$('#a1').attr('rowspan',3);
+//			$('#a1').append('사<img src="" alt="" />진');
+//			$('#b1').append('ID');
+//			$('#c1').append('<a id="openPhone" href="#">'+x.id+'</a>');
+//			$('#b2').append('이름');
+//			$('#c2').append('<a id="openPhone" href="#">'+x.name+'</a>');
+//			$('#b3').append('비번');
+//			$('#c3').append('<a id="openPhone" href="#">'+x.pass+'</a>');
+//			$('#b4').append('주민번호');
+//			$('#c4').append('<a id="openPhone" href="#">'+x.ssn+'</a>');
+			
+			
+			
+//			$('#td-id').html('<a id="openPhone" href="#">'+x.id+'</a>');
+//			var phone=("${phone}"==="")?"개통" : "010-123";
+//			$('#td-phone').html('<a id="openPhone" href="#">'+phone+'</a>');
+//			??? 뭐냐 넌
+//			$(function(){
+//			});
+		});
+	}
 	return {onCreate : onCreate}
 })();
 app.algorithm=(()=>{
@@ -98,34 +162,42 @@ app.algorithm=(()=>{
 		$wrapper.empty();
 		$.getScript(view,()=>{
 //			람다 ALL : 이해하기 어렵다
-			$wrapper.append(navigtion());
+			$wrapper.html(navigtion());
+			
+			$(createDiv({id:'container',clazz:'login-contanier'}))
+			.attr('style','width:100%;height:500px;border:2px solid red')
+			.appendTo($wrapper);
+			
 				$(createButtonNav1st())
 				.appendTo('#div-nav-list-box')
 				.click(()=>{
 					alert('button 클릭');
 				});
 //				오버라이딩
-				$(createATag(createSpan('glyphicon-user','로그인')))
+				$(createATag({id:'a-login',val:createSpan({clazz:'glyphicon-user',val:'로그인'})}))
 				.appendTo('#li-login')
 				.click(()=>{
 					alert('Login btn Click');
+					app.member.onCreate();
 				});
-			
-				$(createATag('수열'))
+				
+				
+				
+				$(createATag({val:'수열'}))
 				.appendTo('#li-sequence')
 				.click(()=>{
 //					오버로딩
 					alert('알고리즘');
 					$('#container').empty();
 					$('#container')
-							.html($(createDiv('content','content')));
+							.html($(createDiv({id:'content',clazz:'content'})));
 							$('#content')
 							.css({'margin-top':'50px',
 								'width':'80%'
 							})
 							.append(sequenceContext());
 							
-							$('#td-algo-arith').html($(createATag('등차수열의 합 : 1+2+3+4+..+100'))
+							$('#td-algo-arith').html($(createATag({val:'등차수열의 합 : 1+2+3+4+..+100'}))
 									.attr('style','margin-top:50px')
 									.on('click',()=>{
 								$('#td-algo-arith-ans').html(createInputThrTab('입력'));
@@ -146,7 +218,7 @@ app.algorithm=(()=>{
 										}
 									});
 							}));
-							$('#td-algo-switch').html($(createATag('스위치 수열의 합 : 1-2+3-4+..-100')).click(()=>{
+							$('#td-algo-switch').html($(createATag({val:'스위치 수열의 합 : 1-2+3-4+..-100'})).click(()=>{
 								$('#td-algo-arith-ans').html(createInputThrTab('입력'));
 									$('#resultbtn')
 									.attr('style','margin-top:50px;margin-left:100px;width:200px;')
@@ -165,7 +237,7 @@ app.algorithm=(()=>{
 										}
 									});
 							}));
-							$('#td-algo-gi').html($(createATag('등비수열의 합 : 2+6+18+54+162 = 242')).click(()=>{
+							$('#td-algo-gi').html($(createATag({val:'등비수열의 합 : 2+6+18+54+162 = 242'})).click(()=>{
 								$('#td-algo-arith-ans').html(createInputThrTab('입력'));
 								$('#resultbtn')
 								.attr('style','margin-top:50px;margin-left:100px;width:200px;')
@@ -184,7 +256,7 @@ app.algorithm=(()=>{
 									}
 								});
 						}));
-							$('#td-algo-gao').html($(createATag('팩토리의 합 : 1!+2!+3!+...')).click(()=>{
+							$('#td-algo-gao').html($(createATag({val:'팩토리의 합 : 1!+2!+3!+...'})).click(()=>{
 								$('#td-algo-arith-ans').html(createInputThrTab('입력'));
 								$('#resultbtn')
 								.attr('style','margin-top:50px;margin-left:100px;width:200px;')
@@ -203,7 +275,7 @@ app.algorithm=(()=>{
 									}
 								});
 							}));
-							$('#td-algo-pibo').html($(createATag('피보나치 수열의 합 : 1+1+2+3+5+8+13...')).click(()=>{
+							$('#td-algo-pibo').html($(createATag({val:'피보나치 수열의 합 : 1+1+2+3+5+8+13...'})).click(()=>{
 								$('#td-algo-arith-ans').html(createInputThrTab('입력'));
 								$('#resultbtn')
 								.attr('style','margin-top:50px;margin-left:100px;width:200px;')
@@ -224,17 +296,17 @@ app.algorithm=(()=>{
 							
 //							$('#td-algo-gi').text('(-1)*2*(-3)*4*(-5)...');
 				});
-				$(createATag('수학'))
+				$(createATag({val:'수학'}))
 				.appendTo('#li-math')
 				.click(()=>{
 					$.getScript(algo,()=>{
 						$('#container')
-						.html($(createDiv('content','container')));
+						.html($(createDiv({id:'content',clazz:'content'})));
 						$('#content')
 						.css({'margin-top':'50px',
 							'width':'80%'
 						})
-						.append($(createMetrixTab('test','boardered',findByMath(),'수학')));
+						.append($(createMetrixTab({id:'test',clazz:'boardered',json:findByMath(),txt:'수학'})));
 //						.append($(createMathTab('test','boardered',findMath(),'수학')));
 //						for(;;){
 //							$('#td-'+i)
@@ -432,7 +504,7 @@ app.algorithm=(()=>{
 //						});
 					});
 				});
-				$(createATag('배열'))	
+				$(createATag({val:'배열'}))	
 				.appendTo('#li-matrix')
 				.click(()=>{
 					alert('배열');
@@ -443,7 +515,7 @@ app.algorithm=(()=>{
 						.css({'margin-top':'50px',
 							'width':'80%'
 						})
-						.append($(createMetrixTab('test','boardered', findBymetrix(),'배열')));
+						.append($(createMetrixTab({id:'test',clazz:'boardered', json:findBymetrix(),txt:'배열'})));
 //								['선택 ','버블 ','삽입','석차','이분','병합','스택'
 //								'Selection ','Bubble ','Insertion','석차','이분','Merge','Stack'
 							$('#a-0')
@@ -497,13 +569,13 @@ app.algorithm=(()=>{
 							});
 						});
 				});
-				$(createATag('정렬'))
+				$(createATag({val:'정렬'}))
 				.appendTo('#li-sort')
 				.click(()=>{
 					alert('정렬');
 //					$('#container').html(createDiv('container',sequenceContext()))
 				});
-				$(createATag('응용'))
+				$(createATag({val:'응용'}))
 				.appendTo('#li-application')
 				.click(()=>{
 					

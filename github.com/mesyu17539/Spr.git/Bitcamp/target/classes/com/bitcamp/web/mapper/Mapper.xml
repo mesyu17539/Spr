@@ -46,11 +46,11 @@
        </otherwise>
    </choose>)
     </insert>
-    <select id="selectMemberById" resultType="com.bitcamp.web.domain.MemberDTO" parameterType="com.bitcamp.web.domain.Command">
-    SELECT * FROM MEMBER
+    <select id="selectById" resultType="com.bitcamp.web.domain.MemberDTO" parameterType="com.bitcamp.web.domain.Command">
+    SELECT * FROM MEMBER WHERE ID LIKE #{data1} AND PASS LIKE #{data2}
     </select>
     <select id="exist" resultType="int" parameterType="com.bitcamp.web.domain.Command">
-    SELECT COUNT(*) FROM MEMBER WHERE ID LIKE 'ㅊㅊㅊ' AND PASS LIKE 'ccc'
+    SELECT COUNT(*) FROM MEMBER WHERE ID LIKE #{data1} AND PASS LIKE #{data2}
     </select>
     <delete id="deleteMember" parameterType="com.bitcamp.web.domain.Command"></delete>
 </mapper>
