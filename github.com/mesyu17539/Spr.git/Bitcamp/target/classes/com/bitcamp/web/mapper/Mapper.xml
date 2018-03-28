@@ -3,49 +3,13 @@
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bitcamp.web.mapper.Mapper">
-    <insert id="insertMember" parameterType="com.bitcamp.web.domain.Command">
-    INSERT INTO MEMBER VALUES (#{member.id},#{member.pass},#{member.name},
-    <choose>
-       <when test="member.ssn == null">
-           ''
-       </when>
-       <otherwise>
-           #{member.ssn}
-       </otherwise>
-   </choose>,
-   <choose>
-       <when test="member.phone == null">
-           ''
-       </when>
-       <otherwise>
-           #{member.phone}
-       </otherwise>
-   </choose>,
-   <choose>
-       <when test="member.email == null">
-           ''
-       </when>
-       <otherwise>
-           #{member.email}
-       </otherwise>
-   </choose>,
-   <choose>
-       <when test="member.profile == null">
-           ''
-       </when>
-       <otherwise>
-           #{member.profile}
-       </otherwise>
-   </choose>,
-   <choose>
-       <when test="member.addr == null">
-           ''
-       </when>
-       <otherwise>
-           #{member.addr}
-       </otherwise>
-   </choose>)
-    </insert>
+    <select id="selectAll" resultType="com.bitcamp.web.domain.BoardDTO" parameterType="com.bitcamp.web.domain.Command">
+    SELECT * 
+    FROM BOARD 
+    </select>
+    <select id="articles" resultType="com.bitcamp.web.domain.BoardDTO" parameterType="com.bitcamp.web.domain.Command">
+    SELECT * FROM (SELECT * FROM (SELECT ROWNUM AS rownu, BBS_SEQ AS bbsSeq,title,content,regdate,id AS userid FROM (SELECT * FROM board ORDER BY BBS_SEQ desc)) WHERE #{data2} >= rownu ) WHERE rownu >= #{data1} 
+    </select>
     <select id="selectById" resultType="com.bitcamp.web.domain.MemberDTO" parameterType="com.bitcamp.web.domain.Command">
     SELECT * FROM MEMBER WHERE ID LIKE #{data1} AND PASS LIKE #{data2}
     </select>

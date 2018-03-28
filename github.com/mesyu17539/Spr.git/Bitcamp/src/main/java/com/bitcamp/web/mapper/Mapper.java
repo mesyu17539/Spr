@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.bitcamp.web.domain.BoardDTO;
 import com.bitcamp.web.domain.Command;
 import com.bitcamp.web.domain.MemberDTO;
 
@@ -15,8 +16,9 @@ public interface Mapper {
 	    public int exist(Command cmd);
 	    public void deleteMember(Command cmd);
 	    public void updateMember(Command cmd);
-	    public List<MemberDTO> selectAll();
+	    public List<MemberDTO> selectAll(Command cmd);
 	    public List<MemberDTO> selectByName(Command cmd);
 	    public MemberDTO selectById(Command cmd);
 	    public int selectCount();
+	    public List<BoardDTO> articles(Command cmd);
 }

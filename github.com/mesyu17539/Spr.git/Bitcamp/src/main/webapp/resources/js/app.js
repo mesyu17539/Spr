@@ -1,50 +1,47 @@
 var app=app || {};
-//app=(()=>{
-//	var init=x=>{
-//		onCreate(x);
-//		setContentView();
-//	};
-//	var onCreate=x=>{
-//		app.router.onCreate(x);
-//	};
-//	var setContentView=()=>{
-//		$('#wrapper').empty();
-//		app.algorithm.onCreate()
-//	};
-//	return{
-//		init : init
-//	};
-//})();//IPAI(이파이) 즉시 실행하는 함수
-//ajax
-app =(()=>{
-	var init=x=>{
+//즉시실행 : 객체 리터럴
+app = {init:x=>{
 		$.getScript(x+'/resources/js/router.js',()=>{
+//					함수 이용하기▽
 			$.extend(new Router(x));
 			app.algorithm.onCreate();
 			app.member.onCreate();
-			app.board.onCreate();
 		})
-	};
-	return {init:init}
-})();
-app.board=(()=>{
-	var onCreate=()=>{
-		algo=$.javascript()+'/algo.js';
-		view=$.javascript()+'/view.js';
-		setContentView();
-	};
-	var setContentView=()=>{
-		$.getScript(view,()=>{
-			$(createATag({val:createSpan({clazz:'glyphicon-blackboard',val:'보드'})}))
-			.appendTo('#li-board')
-			.click(()=>{
-				alert('보드 btn Click');
-				$('#container').html('빠꿔');
+	}};
+app.board={
+		articles : x=>{
+			//JSON으로 받음. {:}
+			alert('전달 받은 값'+x);
+//			객체(데이터)를 주고 받기에 느리고 오류나면 전송,수신자 모두 봐야한다
+//			$.ajax(new Object())
+//			getJSON 방식
+//			x =>{} 시스템이 오류난다면 JAVA 코딩이 잘못된거다. 이유는 수신자 역할만 하기 때문. 그냥 아무거나 받기만 함
+			$.getJSON(x+'/articles',d=>{
+				$.getScript(x+'/resources/js/view.js',()=>{
+					$('#content').empty();
+					$(createTab({
+	                    id: 'articles', 
+	                    clazz:''
+	                }))
+	                .appendTo('#content');
+	                
+	                $(createTh({
+	                    list: ['글번호', '제목', '작성자', '작성일', '수정/삭제'],
+	                    thClazz:'',
+	                })).appendTo('#articles');
+	                
+	                
+	                $(createTr({
+	                    trList: d,
+	                    trClazz: '',
+	                    tdList: '',
+	                    tdClazz: ''
+	                }))
+	                .appendTo('#articles');
+				});
 			});
-		});
-	};
-	return {onCreate:onCreate}
-})();
+		}
+};
 app.member=(()=>{
 	var onCreate=()=>{
 		$wrapper =$('#wrapper');
@@ -55,9 +52,8 @@ app.member=(()=>{
 	};
 	var setContentView=()=>{
 		$.getScript(view,()=>{
-//			$wrapper.append(loginp('login-outer-table'));
 			$(createDiv({id:'content',clazz:'login-content'}))
-			.attr('style','width:60%;height:400px;border:2px solid blue;margin:50px auto')
+			.attr('style','width:30%;height:400px;margin:50px auto')
 			.appendTo('#container');
 			$(loginOutBox('login-inner-table'))
 			.appendTo('#content');
@@ -67,11 +63,11 @@ app.member=(()=>{
 			.appendTo('#div-login-btn')
 			.on('click',e=>{
 				e.preventDefault();//없으면 입력된값만 가져가므로 처리해야함.
+				var userid=$('#index_input_id').val();
 				var jason={
-                        'id' : $('#index_input_id').val(),
                         'pass' : $('#index_input_password').val()};
 				$.ajax({
-					url:context+'/member/login',
+					url:context+'/members/'+userid+'/login',
 					method:'POST',
 					data:JSON.stringify(jason),
 					dataType:'json',
@@ -109,7 +105,7 @@ app.member=(()=>{
 		$.getScript(view,()=>{
 			$('#container').empty();
 			$(createDiv({id:'content',clazz:'login-content'}))
-			.attr('style','width:80%;height:400px;border:2px solid blue;margin:50px auto')
+			.attr('style','width:80%;height:400px;margin:50px auto')
 			.appendTo('#container');
 			$('#content')
 			.append(createDiv({id:'biro',clazz:'row'}));
@@ -122,29 +118,6 @@ app.member=(()=>{
 			$('#td-profile').remove();
 			$('#th-pass').remove();
 			$('#td-pass').remove();
-//			.append(makingTable('table table-bordered','MYPAGE'));
-//			$('#a2').remove();
-//			$('#a3').remove();
-//			$('#a4').append('<a id="openPhone" href="#">'+x.name+'</a>')
-//			$('#a1').attr('rowspan',3);
-//			$('#a1').append('사<img src="" alt="" />진');
-//			$('#b1').append('ID');
-//			$('#c1').append('<a id="openPhone" href="#">'+x.id+'</a>');
-//			$('#b2').append('이름');
-//			$('#c2').append('<a id="openPhone" href="#">'+x.name+'</a>');
-//			$('#b3').append('비번');
-//			$('#c3').append('<a id="openPhone" href="#">'+x.pass+'</a>');
-//			$('#b4').append('주민번호');
-//			$('#c4').append('<a id="openPhone" href="#">'+x.ssn+'</a>');
-			
-			
-			
-//			$('#td-id').html('<a id="openPhone" href="#">'+x.id+'</a>');
-//			var phone=("${phone}"==="")?"개통" : "010-123";
-//			$('#td-phone').html('<a id="openPhone" href="#">'+phone+'</a>');
-//			??? 뭐냐 넌
-//			$(function(){
-//			});
 		});
 	}
 	return {onCreate : onCreate}
@@ -165,7 +138,7 @@ app.algorithm=(()=>{
 			$wrapper.html(navigtion());
 			
 			$(createDiv({id:'container',clazz:'login-contanier'}))
-			.attr('style','width:100%;height:500px;border:2px solid red')
+			.attr('style','width:100%;height:500px')
 			.appendTo($wrapper);
 			
 				$(createButtonNav1st())
@@ -181,7 +154,12 @@ app.algorithm=(()=>{
 					app.member.onCreate();
 				});
 				
-				
+				$(createATag({val:createSpan({clazz:'glyphicon-blackboard',val:'보드'})}))
+				.appendTo('#li-board')
+				.click(()=>{
+					alert('보드 btn Click');
+					 app.board.articles(context);
+				});
 				
 				$(createATag({val:'수열'}))
 				.appendTo('#li-sequence')
@@ -307,23 +285,6 @@ app.algorithm=(()=>{
 							'width':'80%'
 						})
 						.append($(createMetrixTab({id:'test',clazz:'boardered',json:findByMath(),txt:'수학'})));
-//						.append($(createMathTab('test','boardered',findMath(),'수학')));
-//						for(;;){
-//							$('#td-'+i)
-//							.attr('style','margin-top:50px;margin-left:100px;width:200px;')
-//							.on('click',()=>{
-//								var x=$('#input-init-val').val();
-//								var y=$('#input-limit-val').val();
-//								if(x!==''&&x>0
-//										&&y!==''&&y>0){
-//									$.getScript(algo,()=>{
-//										$('#resultText').text(piboSeq(x,y));
-//									});
-//								}else{
-//									alert('값을 넣어 주세요');
-//								}
-//							});
-//						}
 //						'소수의 합 구하기','최대공약수','소인수 분해하기','최대값 최소값 구하기',
 //						'5의 배수의 개수와 합','7에 가장 가까운 수 구하기','화폐','사과',
 //						'구구단','반배정'
@@ -361,147 +322,6 @@ app.algorithm=(()=>{
 								}
 							});
 						});
-//						$('#a-2')
-//						.on('click',()=>{
-//							$('#result').html(createInputOneTab('소인수 분해하기'));
-//							$('#resultbtn')
-//							.attr('style','margin-top:50px;margin-left:100px;width:200px;')
-//							.on('click',()=>{
-//								var x=$('#input-init-val').val();
-//								if(x!==''&&x>0){
-//									$.getScript(algo,()=>{
-//										$('#resultText').text(primeFactorization(x,y));
-//									});
-//								}else{
-//									alert('값을 넣어 주세요');
-//								}
-//							});
-//						});
-////						오류 파라미터 맞출것
-//						$('#a-3')
-//						.on('click',()=>{
-//							$('#result').html(createInputThrTab('최대값 최소값 구하기'));
-//							$('#resultbtn')
-//							.attr('style','margin-top:50px;margin-left:100px;width:200px;')
-//							.on('click',()=>{
-//								var x=$('#input-init-val').val();
-//								var y=$('#input-limit-val').val();
-//								if(x!==''&&x>0
-//										&&y!==''&&y>0){
-//									$.getScript(algo,()=>{
-//										$('#resultText').text(maxNum(x,y,z)+minNum(x,y,z));
-//									});
-//								}else{
-//									alert('값을 넣어 주세요');
-//								}
-//							});
-//						});
-//						$('#a-4')
-//						.on('click',()=>{
-//							$('#result').html(createInputOneTab('5의 배수의 개수와 합'));
-//							$('#resultbtn')
-//							.attr('style','margin-top:50px;margin-left:100px;width:200px;')
-//							.on('click',()=>{
-//								var x=$('#input-init-val').val();
-//								if(x!==''&&x>0){
-//									$.getScript(algo,()=>{
-//										$('#resultText').text(fiveMultipleSum(x));
-//									});
-//								}else{
-//									alert('값을 넣어 주세요');
-//								}
-//							});
-//						});
-//						$('#a-5')
-//						.on('click',()=>{
-//							$('#result').html(createInputThrTab('7에 가장 가까운 수 구하기'));
-//							$('#resultbtn')
-//							.attr('style','margin-top:50px;margin-left:100px;width:200px;')
-//							.on('click',()=>{
-//								var x=$('#input-init-val').val();
-//								var y=$('#input-limit-val').val();
-//								if(x!==''&&x>0
-//										&&y!==''&&y>0){
-//									$.getScript(algo,()=>{
-//										$('#resultText').text(findNearNum(x,y));
-//									});
-//								}else{
-//									alert('값을 넣어 주세요');
-//								}
-//							});
-//						});
-//						$('#a-6')
-//						.on('click',()=>{
-//							$('#result').html(createInputThrTab('화폐'));
-//							$('#resultbtn')
-//							.attr('style','margin-top:50px;margin-left:100px;width:200px;')
-//							.on('click',()=>{
-//								var x=$('#input-init-val').val();
-//								var y=$('#input-limit-val').val();
-//								if(x!==''&&x>0
-//										&&y!==''&&y>0){
-//									$.getScript(algo,()=>{
-//										$('#resultText').text(greatestCommonDivisor(x,y));
-//									});
-//								}else{
-//									alert('값을 넣어 주세요');
-//								}
-//							});
-//						});
-//						$('#a-7')
-//						.on('click',()=>{
-//							$('#result').html(createInputThrTab('입력'));
-//							$('#resultbtn')
-//							.attr('style','margin-top:50px;margin-left:100px;width:200px;')
-//							.on('click',()=>{
-//								var x=$('#input-init-val').val();
-//								var y=$('#input-limit-val').val();
-//								if(x!==''&&x>0
-//										&&y!==''&&y>0){
-//									$.getScript(algo,()=>{
-//										$('#resultText').text(greatestCommonDivisor(x,y));
-//									});
-//								}else{
-//									alert('값을 넣어 주세요');
-//								}
-//							});
-//						});
-//						$('#a-8')
-//						.on('click',()=>{
-//							$('#result').html(createInputThrTab('입력'));
-//							$('#resultbtn')
-//							.attr('style','margin-top:50px;margin-left:100px;width:200px;')
-//							.on('click',()=>{
-//								var x=$('#input-init-val').val();
-//								var y=$('#input-limit-val').val();
-//								if(x!==''&&x>0
-//										&&y!==''&&y>0){
-//									$.getScript(algo,()=>{
-//										$('#resultText').text(greatestCommonDivisor(x,y));
-//									});
-//								}else{
-//									alert('값을 넣어 주세요');
-//								}
-//							});
-//						});
-//						$('#a-9')
-//						.on('click',()=>{
-//							$('#result').html(createInputThrTab('입력'));
-//							$('#resultbtn')
-//							.attr('style','margin-top:50px;margin-left:100px;width:200px;')
-//							.on('click',()=>{
-//								var x=$('#input-init-val').val();
-//								var y=$('#input-limit-val').val();
-//								if(x!==''&&x>0
-//										&&y!==''&&y>0){
-//									$.getScript(algo,()=>{
-//										$('#resultText').text(greatestCommonDivisor(x,y));
-//									});
-//								}else{
-//									alert('값을 넣어 주세요');
-//								}
-//							});
-//						});
 					});
 				});
 				$(createATag({val:'배열'}))	

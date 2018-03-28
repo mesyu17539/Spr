@@ -1,3 +1,4 @@
+//전역들 잘못쓰면 오염됨.
 function Router(x){
 	sessionStorage.setItem('context',x);
 	sessionStorage.setItem('javascript',x+'/resources/js');

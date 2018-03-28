@@ -1,3 +1,39 @@
+var createTab=x=>{
+	var tab='<table id="'+x.id+'" class="'+x.clazz+'"></table>';
+	return tab;
+}
+var createTr=x=>{
+   var temp = '';
+   var num=0;
+   $.each(x.trList, (i,j)=>{
+       temp +='<tr id="tr_'+num+'" class="'+x.trClazz+'">'
+                   +createTd({
+                       list: j,
+                       q: (num++),
+                       clazz: x.tdClazz
+                       })+'</tr>';
+   });
+   return temp;
+}
+var createTd=x=>{
+   var temp = '';
+   var w=0;
+    $.each(x.list,(k,j)=>{
+        if(w!=3){
+        	temp +='<td id="td_'+x.q+'_'+(w++)+'" class="'+x.clazz+'">'
+        			+'&nbsp;'+j+'</td>';
+        }
+    });
+   return temp;
+}
+var createTh=x=>{
+	   var temp = '';
+	 $.each(x.list,(k,j)=>{
+	        temp +='<td class="'+x.clazz+'">'
+	                +'&nbsp;'+j+'</td>';
+	    });
+	   return temp;
+}
 var makingTable=(y,txt)=>{
     var tab = '<table class = "'+y+'">'
 
@@ -179,22 +215,26 @@ var createLI=x=>{
 var createText=x=>{
 	return '<span id="'+x+'"></span>';
 }
-var createTab=x=>{
-	var tab='<table id="'+x.id+'" class="'+x.clazz+'">'
-			+'<tr>'
-				+'<th colspan="5">'+x.txt+'</th>'
-			+'</tr>';
-	$.each(x.json,function(i,j){
-		tab +='<tr>'
-			+'<td>('+i+')'+j.a+'</td>'
-			+'<td>('+i+')'+j.b+'</td>'
-			+'<td>('+i+')'+j.c+'</td>'
-			+'<td>('+i+')'+j.d+'</td>'
-			+'<td>('+i+')'+j.e+'</td>'
-			+'</tr>'
+var createSList=x=>{
+	var t='';
+	$.each(x,function(i,j){
+		t+='<td>'+j+'</td>'
 	});
-	tab+='</table>';
-	return tab;
+	return t;
+}
+var createTDL=x=>{
+	var t='';
+	$.each(x,function(i,j){
+		t+='<td><td>'
+	});
+	return '';
+}
+var createTPI=x=>{
+	var t='';
+	$.each(x,function(i,j){
+		t+='<td>'+i+'</td>'
+	});
+	return t;
 }
 var createMathTab=x=>{
 	var tab = '<table id="'+x.id+'" class="table table-'+x.clazz+'">'
@@ -229,17 +269,8 @@ var createMetrixTab=x=>{
 	tab+='</table>';
 	return tab;
 }
-var createTR=x=>{
-	return '<tr>'+x+'</tr>';
-}
-var createTH=x=>{
-	return '<th id="'+x+'"></th>';
-}
 var createInputText=x=>{
 	return '<input id="'+x.id+'" class="'+x.clazz+'" type="text"/>';
-}
-var createTD=x=>{
-	return '<td id="'+x+'"></td>';
 }
 var createInputThrTab=x=>{
 	return '<table>'
