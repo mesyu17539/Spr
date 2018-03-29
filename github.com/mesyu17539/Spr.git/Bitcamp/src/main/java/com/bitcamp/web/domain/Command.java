@@ -11,4 +11,5 @@ import lombok.Data;
 @Lazy
 public class Command{
 	protected String data1,data2;
+	protected int iData1,iData2;
 }

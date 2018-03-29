@@ -8,36 +8,177 @@ app = {init:x=>{
 			app.member.onCreate();
 		})
 	}};
-app.board={
+app.board=(x=>{
+	var onCreate=()=>{
+		$wrapper =$('#wrapper');
+		context = $.context();
+		image=$.image();
+		view=$.javascript()+'/view.js';
+		setContentView();
+	};
+	var setContentView=()=>{
+		articles(1);
+	}
+	var articles =x=>{
+		$.getJSON(context+'/articles/'+x,d=>{
+			$.getScript(context+'/resources/js/view.js',()=>{
+				$('#content').empty();
+				$(createTab({
+                    id: 'articles', 
+                    clazz:''
+                }))
+				.attr('style','margin:50px auto')
+                .appendTo('#content');
+                
+                $(createTh({
+                    list: ['글번호', '제목', '작성자', '작성일', '수정/삭제'],
+                    thClazz:'',
+                }))
+                .attr('style', 'background-color: #333; color: white; height: 40px')
+                .appendTo('#articles');
+                
+                $(createTr({
+                    trList: d.list,
+                    trClazz: '',
+                    tdList: '',
+                    tdClazz: 'flag-'
+                }))
+                .attr('style', 'text-align: center; border-bottom: 1px solid gray; height: 40px')
+                .appendTo('#articles');
+                for(var i=0;i<d.page.pageSize;i++){
+                	$('#tr_'+i).append($(createFlag({id:''}))
+                			.append($('<button>수정</button>')
+                                	.attr('onClick','alert("'+$('#td_'+i+'_1').text()+'")'))
+                			.append($('<button>삭제</button>')
+                			.attr('onClick','alert("'+$('#td_'+i+'_1').text()+'")')));
+                }
+                $(createNav({id:'nav-page',clazz:''}))
+                .appendTo('#content');
+                $(createUL({id:'ul-page',clazz:'pagination'}))
+                .appendTo('#nav-page');
+                if(d.page.startPage!=1){
+                	$(createLI({id:'li-prev',clazz:''}))
+                	.attr('style','margin:50px auto')
+                	.appendTo('#ul-page');
+                	$(createATag({link:'#',id:'a-prev',val:' '}))
+                	.attr('onClick','app.board.articles('+((d.page.startPage)-1)+'); return false;')
+                	.attr('aria-label','Previous')
+                	.appendTo('#li-prev');
+                	$(createSpan({clazz:'',val:'&laquo;'}))
+                	.appendTo('#a-prev');
+                }
+                for(var i=d.page.startPage;i<=d.page.endPage;i++){
+                	$(createLI({id:'li'+i,clazz:''}))
+                	.appendTo('#ul-page');
+                	$(createATag({link:'#',id:'page'+i,val:''}))
+                	.appendTo('#li'+i);
+                	if(i==d.page.pageNum){
+                		$(createFont({val:i}))
+                		.attr('style','color:red')
+                		.appendTo('#page'+i);
+//                		.appendTo($(this));
+                	}else{
+                		$(createFont({val:i}))
+                		.appendTo($('#page'+i)
+                				.attr('onClick','app.board.articles('+i+'); return false;')
+                				);
+//                		.appendTo($(this));
+                	}
+                }
+                if(d.page.endPage!=d.page.totalPageCount){
+                	$(createLI({id:'li-next',clazz:''}))
+                	.appendTo('#ul-page');
+                	$(createATag({link:'#',id:'a-next',val:' '}))
+                	.attr('onClick','app.board.articles('+((d.page.endPage)+1)+'); return false;')
+                	.attr('aria-label','Next')
+                	.appendTo('#li-next');
+                	$(createSpan({clazz:'',val:'&raquo;'}))
+                	.appendTo('#a-next');
+                }
+			});
+		});
+	}
+	return {articles:articles,onCreate:onCreate}
+})();
+app.board2={
 		articles : x=>{
 			//JSON으로 받음. {:}
-			alert('전달 받은 값'+x);
+			alert('전달 받은 값'+x.context);
 //			객체(데이터)를 주고 받기에 느리고 오류나면 전송,수신자 모두 봐야한다
 //			$.ajax(new Object())
 //			getJSON 방식
 //			x =>{} 시스템이 오류난다면 JAVA 코딩이 잘못된거다. 이유는 수신자 역할만 하기 때문. 그냥 아무거나 받기만 함
-			$.getJSON(x+'/articles',d=>{
-				$.getScript(x+'/resources/js/view.js',()=>{
+			$.getJSON(x.context+'/articles/'+x.pageNum,d=>{
+				$.getScript(x.context+'/resources/js/view.js',()=>{
+					alert('나옴?');
 					$('#content').empty();
 					$(createTab({
 	                    id: 'articles', 
 	                    clazz:''
 	                }))
+					.attr('style','margin:50px auto')
 	                .appendTo('#content');
 	                
 	                $(createTh({
 	                    list: ['글번호', '제목', '작성자', '작성일', '수정/삭제'],
 	                    thClazz:'',
-	                })).appendTo('#articles');
-	                
+	                }))
+	                 .attr('style', 'background-color: #333; color: white; height: 40px')
+	                .appendTo('#articles');
 	                
 	                $(createTr({
-	                    trList: d,
+	                    trList: d.list,
 	                    trClazz: '',
 	                    tdList: '',
 	                    tdClazz: ''
 	                }))
+	                .attr('style', 'text-align: center; border-bottom: 1px solid gray; height: 40px')
 	                .appendTo('#articles');
+	                
+	                $(createNav({id:'nav-page',clazz:''}))
+	                .appendTo('#content');
+	                $(createUL({id:'ul-page',clazz:'pagination'}))
+					.attr('style','margin:50px auto')
+	                .appendTo('#nav-page');
+	                if(d.page.startPage!=1){
+	                	$(createLI({id:'li-prev',clazz:''}))
+	                	.appendTo('#ul-page');
+	                	$(createATag({link:'#',id:'a-prev'}))
+	                	.attr('onClick',app.board.articles({content:x.content,pageNum:d.page.startPage-1}))
+	                	.attr('aria-label','Previous')
+	                	.appendTo('#li-prev');
+	                	$(createSpan({clazz:'',val:'&laquo;'}))
+	                	.appendTo('#a-prev');
+	                }
+	                for(var i=d.page.startPage;i<=d.page.endPage;i++){
+	                	$(createLI({id:'li'+i,clazz:''}))
+	                	.appendTo('#ul-page');
+	                	$(createATag({link:'#',id:'page'+i,link:app.board.articles({content:x.content,pageNum:x.pageNum}),val:""}))
+	                	.appendTo('#li'+i);
+	                	if(i==d.page.pageNum){
+	                		$(createFont({val:i}))
+	                		.attr('style','color:red')
+	                		.appendTo('#page'+i);
+//	                		.appendTo($(this));
+	                	}else{
+	                		$(createFont({val:i}))
+	                		.appendTo('#page'+i);
+//	                		.appendTo($(this));
+	                		$(this)
+	                		.attr('onClick',app.board.articles({content:x.content,pageNum:i}))
+	                		.appendTo();
+	                	}
+	                }
+	                if(d.page.endPage!=d.page.totalPageCount){
+	                	$(createLI({id:'li-next',clazz:''}))
+	                	.appendTo('#ul-page');
+	                	$(createATag({link:'#',id:'a-next'}))
+	                	.attr('onClick',app.board.articles({content:x.content,pageNum:d.page.endPage+1}))
+	                	.attr('aria-label','Next')
+	                	.appendTo('#li-next');
+	                	$(createSpan({clazz:'',val:'&raquo;'}))
+	                	.appendTo('#a-next');
+	                }
 				});
 			});
 		}
@@ -53,9 +194,10 @@ app.member=(()=>{
 	var setContentView=()=>{
 		$.getScript(view,()=>{
 			$(createDiv({id:'content',clazz:'login-content'}))
-			.attr('style','width:30%;height:400px;margin:50px auto')
+			.attr('style','width:80%;height:400px;margin:50px auto')
 			.appendTo('#container');
 			$(loginOutBox('login-inner-table'))
+			.attr('style','margin:50px auto')
 			.appendTo('#content');
 			$(loginInBox('login-inner-table'))
 			.appendTo('#inbox-position');
@@ -105,7 +247,7 @@ app.member=(()=>{
 		$.getScript(view,()=>{
 			$('#container').empty();
 			$(createDiv({id:'content',clazz:'login-content'}))
-			.attr('style','width:80%;height:400px;margin:50px auto')
+			.attr('style','width:80%;height:400px;margin:0 auto')
 			.appendTo('#container');
 			$('#content')
 			.append(createDiv({id:'biro',clazz:'row'}));
@@ -137,8 +279,8 @@ app.algorithm=(()=>{
 //			람다 ALL : 이해하기 어렵다
 			$wrapper.html(navigtion());
 			
-			$(createDiv({id:'container',clazz:'login-contanier'}))
-			.attr('style','width:100%;height:500px')
+			$(createDiv({id:'container',clazz:'contanier'}))
+			.attr('style', 'background-color: white; padding: 50px')
 			.appendTo($wrapper);
 			
 				$(createButtonNav1st())
@@ -147,21 +289,21 @@ app.algorithm=(()=>{
 					alert('button 클릭');
 				});
 //				오버라이딩
-				$(createATag({id:'a-login',val:createSpan({clazz:'glyphicon-user',val:'로그인'})}))
+				$(createATag({link:'#',id:'a-login',link:'#',val:createSpan({clazz:'glyphicon-user',val:'로그인'})}))
 				.appendTo('#li-login')
 				.click(()=>{
 					alert('Login btn Click');
 					app.member.onCreate();
 				});
 				
-				$(createATag({val:createSpan({clazz:'glyphicon-blackboard',val:'보드'})}))
+				$(createATag({link:'#',val:createSpan({clazz:'glyphicon-blackboard',val:'보드'}),link:'#'}))
 				.appendTo('#li-board')
 				.click(()=>{
 					alert('보드 btn Click');
-					 app.board.articles(context);
+					 app.board.onCreate();
 				});
 				
-				$(createATag({val:'수열'}))
+				$(createATag({link:'#',val:'수열',link:'#'}))
 				.appendTo('#li-sequence')
 				.click(()=>{
 //					오버로딩
@@ -174,8 +316,7 @@ app.algorithm=(()=>{
 								'width':'80%'
 							})
 							.append(sequenceContext());
-							
-							$('#td-algo-arith').html($(createATag({val:'등차수열의 합 : 1+2+3+4+..+100'}))
+							$('#td-algo-arith').html($(createATag({link:'#',val:'등차수열의 합 : 1+2+3+4+..+100'}))
 									.attr('style','margin-top:50px')
 									.on('click',()=>{
 								$('#td-algo-arith-ans').html(createInputThrTab('입력'));
@@ -196,7 +337,7 @@ app.algorithm=(()=>{
 										}
 									});
 							}));
-							$('#td-algo-switch').html($(createATag({val:'스위치 수열의 합 : 1-2+3-4+..-100'})).click(()=>{
+							$('#td-algo-switch').html($(createATag({link:'#',val:'스위치 수열의 합 : 1-2+3-4+..-100'})).click(()=>{
 								$('#td-algo-arith-ans').html(createInputThrTab('입력'));
 									$('#resultbtn')
 									.attr('style','margin-top:50px;margin-left:100px;width:200px;')
@@ -215,7 +356,7 @@ app.algorithm=(()=>{
 										}
 									});
 							}));
-							$('#td-algo-gi').html($(createATag({val:'등비수열의 합 : 2+6+18+54+162 = 242'})).click(()=>{
+							$('#td-algo-gi').html($(createATag({link:'#',val:'등비수열의 합 : 2+6+18+54+162 = 242'})).click(()=>{
 								$('#td-algo-arith-ans').html(createInputThrTab('입력'));
 								$('#resultbtn')
 								.attr('style','margin-top:50px;margin-left:100px;width:200px;')
@@ -234,7 +375,7 @@ app.algorithm=(()=>{
 									}
 								});
 						}));
-							$('#td-algo-gao').html($(createATag({val:'팩토리의 합 : 1!+2!+3!+...'})).click(()=>{
+							$('#td-algo-gao').html($(createATag({link:'#',val:'팩토리의 합 : 1!+2!+3!+...'})).click(()=>{
 								$('#td-algo-arith-ans').html(createInputThrTab('입력'));
 								$('#resultbtn')
 								.attr('style','margin-top:50px;margin-left:100px;width:200px;')
@@ -253,7 +394,7 @@ app.algorithm=(()=>{
 									}
 								});
 							}));
-							$('#td-algo-pibo').html($(createATag({val:'피보나치 수열의 합 : 1+1+2+3+5+8+13...'})).click(()=>{
+							$('#td-algo-pibo').html($(createATag({link:'#',val:'피보나치 수열의 합 : 1+1+2+3+5+8+13...'})).click(()=>{
 								$('#td-algo-arith-ans').html(createInputThrTab('입력'));
 								$('#resultbtn')
 								.attr('style','margin-top:50px;margin-left:100px;width:200px;')
@@ -274,7 +415,7 @@ app.algorithm=(()=>{
 							
 //							$('#td-algo-gi').text('(-1)*2*(-3)*4*(-5)...');
 				});
-				$(createATag({val:'수학'}))
+				$(createATag({link:'#',val:'수학'}))
 				.appendTo('#li-math')
 				.click(()=>{
 					$.getScript(algo,()=>{
@@ -324,7 +465,7 @@ app.algorithm=(()=>{
 						});
 					});
 				});
-				$(createATag({val:'배열'}))	
+				$(createATag({link:'#',val:'배열'}))	
 				.appendTo('#li-matrix')
 				.click(()=>{
 					alert('배열');
@@ -389,13 +530,13 @@ app.algorithm=(()=>{
 							});
 						});
 				});
-				$(createATag({val:'정렬'}))
+				$(createATag({link:'#',val:'정렬'}))
 				.appendTo('#li-sort')
 				.click(()=>{
 					alert('정렬');
 //					$('#container').html(createDiv('container',sequenceContext()))
 				});
-				$(createATag({val:'응용'}))
+				$(createATag({link:'#',val:'응용'}))
 				.appendTo('#li-application')
 				.click(()=>{
 					

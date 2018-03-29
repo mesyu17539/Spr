@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bitcamp.web.domain.BoardDTO;
+import com.bitcamp.web.domain.Board;
 import com.bitcamp.web.domain.Command;
-import com.bitcamp.web.domain.MemberDTO;
+import com.bitcamp.web.domain.Member;
 import com.bitcamp.web.domain.Page;
 import com.bitcamp.web.mapper.Mapper;
 import com.bitcamp.web.service.ICountService;
@@ -40,7 +40,7 @@ public class MemberController {
 			consumes="application/json")
 	public /*@ResponseBody*/ Map<?,?> login(
 			@PathVariable String userid,
-			@RequestBody MemberDTO m){
+			@RequestBody Member m){
 		Map<String,Object> map=new HashMap<>();
 		logger.info("welcom {}","Member");
 		logger.info("id {}",userid);
@@ -69,7 +69,7 @@ public class MemberController {
 		
 		if(count==1) {
 			System.out.println("저장? : "+count);
-			map.put("user", (MemberDTO) new IGetService() {
+			map.put("user", (Member) new IGetService() {
 				
 				@Override
 				public Object execute(Command cmd) {
@@ -81,17 +81,34 @@ public class MemberController {
 		}
 		return map;
 	}
-	@RequestMapping(value="/articles")
-	public Map<?,?> getArticles(){
+	@RequestMapping(value="/articles/{pageNum}")
+	public Map<?,?> getArticles(
+			@PathVariable String pageNum){
 		logger.info("welcom control {}","getArticles");
 		Map<String, Object> map = new HashMap<>();
-		page.setPageNum(1);
-		page.setBlockSize(5);
+		page.setPageNum(Integer.parseInt(pageNum));
 		page.setPageSize(5);
-		page.setTotalCount(0);
+		page.setNowPage(1);
+		page.setBlockSize(5);
+		page.setTotalCount((int) new IGetService() {
+			@Override
+			public Object execute(Command cmd) {
+				// TODO Auto-generated method stub
+				return mapper.selectCount();
+			}
+		}.execute(cmd));
 		page=(Page) adapter.attr(page);
-		cmd.setData1(page.getStartPage()+"");
-		cmd.setData1(page.getEndPage()+"");
+		
+		cmd.setIData1(page.getStartRow());
+		cmd.setIData2(page.getEndRow());
+		logger.info("cmd.getData1 {}",cmd.getIData1());
+		logger.info("cmd.getData2 {}",cmd.getIData2());
+		logger.info("cmd.getPageNum {}",page.getPageNum());
+		logger.info("cmd.getStartPage {}",page.getStartPage());
+		logger.info("cmd.getEndRow {}",page.getEndRow());
+		logger.info("cmd.getStartRow {}",page.getStartRow());
+		logger.info("cmd.getEndPage {}",page.getEndPage());
+		logger.info("cmd.getTotalPageCount {}",page.getTotalPageCount());
 		List<?> list= (List<?>) new IGetService() {
 			@Override
 			public Object execute(Command cmd) {

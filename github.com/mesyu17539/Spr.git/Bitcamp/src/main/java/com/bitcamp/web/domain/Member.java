@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @Component @Lazy
-public class MemberDTO {
+public class Member {
 	//어소시에이션 방식
 	private String id, pass, name,ssn,phone, email,profile,addr;
 

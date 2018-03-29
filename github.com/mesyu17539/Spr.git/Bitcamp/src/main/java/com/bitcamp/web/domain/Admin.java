@@ -7,10 +7,6 @@ import lombok.Data;
 
 @Data
 @Component @Lazy
-public class BoardDTO {
-	private String bbsSeq,
-	title,
-	content,
-	id,
-	regdate;
+public class Admin {
+	private String admSeq;
 }

@@ -2,6 +2,12 @@ var createTab=x=>{
 	var tab='<table id="'+x.id+'" class="'+x.clazz+'"></table>';
 	return tab;
 }
+var createNav=x=>{
+	return '<nav id="'+x.id+'" class="'+x.clazz+'"></nav>';
+}
+var createFont=x=>{
+	return '<font>'+x.val+'</font>'
+}
 var createTr=x=>{
    var temp = '';
    var num=0;
@@ -19,8 +25,8 @@ var createTd=x=>{
    var temp = '';
    var w=0;
     $.each(x.list,(k,j)=>{
-        if(w!=3){
-        	temp +='<td id="td_'+x.q+'_'+(w++)+'" class="'+x.clazz+'">'
+        if((w++)!=2){
+        	temp +='<td id="td_'+x.q+'_'+w+'" class="'+x.clazz+w+'">'
         			+'&nbsp;'+j+'</td>';
         }
     });
@@ -222,12 +228,8 @@ var createSList=x=>{
 	});
 	return t;
 }
-var createTDL=x=>{
-	var t='';
-	$.each(x,function(i,j){
-		t+='<td><td>'
-	});
-	return '';
+var createFlag=x=>{
+	return '<td id="flag-'+x.id+'"></td>';
 }
 var createTPI=x=>{
 	var t='';
@@ -360,7 +362,12 @@ var sequenceContext=()=>{
 }
 
 var createATag=x=>{
-	return '<a id="'+x.id+'" href="#"> '+x.val+'</a>';
+	return '<a id="'+x.id+'" href="'+x.link+'"> '+x.val+'</a>';
+}
+var createAria=x=>{
+	return '<a id="'+x.id+'" href="#"'
+	 +'onclick="'+x.link+'" aria-label="'+x.label+'"></a>';
+//	app.boardList(${page.startPage-1}); return false;
 }
 var createSpan=x=>{
 	return '<span class="glyphicon '+x.clazz+'" aria-hidden="true">&nbsp;'

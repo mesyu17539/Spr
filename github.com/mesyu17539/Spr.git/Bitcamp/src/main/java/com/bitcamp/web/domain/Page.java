@@ -4,9 +4,12 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-@Component
+import lombok.Data;
+
+@Component @Lazy
 public class Page {
 	int nowPage//현재 위치한 페이지
 		,totalCount//리스트 총 갯수
@@ -19,23 +22,19 @@ public class Page {
 		,pageSize//화면에 보여줄 이동할 페이지 숫자
 		,totalPageCount//페이지 총 갯수
 		;
+		boolean prevBlock;
+		
+	public boolean isPrevBlock() {
+		return prevBlock;
+	}
+	public void setPrevBlock(boolean prevBlock) {
+		this.prevBlock = prevBlock;
+	}
 	public int getNowPage() {
 		return nowPage;
 	}
 	public void setNowPage(int nowPage) {
 		this.nowPage = nowPage;
-	}
-	public int getTotalCount() {
-		return totalCount;
-	}
-	public void setTotalCount(int totalCount) {
-		this.totalCount = totalCount;
-	}
-	public int getTotalPageCount() {
-		return totalPageCount;
-	}
-	public void setTotalPageCount(int totalPageCount) {
-		this.totalPageCount = ((totalCount%blockSize==0)?(totalCount/blockSize):((totalCount/blockSize)+1));
 	}
 	public int getBlockSize() {
 		return blockSize;
@@ -82,7 +81,18 @@ public class Page {
 	public void setEndPage(int endPage) {
 		endPage=((pageNum-1)/pageSize)*pageSize+pageSize;
 		this.endPage = (endPage>=totalPageCount)?totalPageCount:endPage;
-//		this.endPage = ((nowPage+pageSize-1)>=totalPageCount)?totalPageCount:nowPage+pageSize-1;
+	}
+	public int getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(int totalCount) {
+		this.totalCount = totalCount;
+	}
+	public int getTotalPageCount() {
+		return totalPageCount;
+	}
+	public void setTotalPageCount(int totalPageCount) {
+		this.totalPageCount = ((totalCount%blockSize==0)?(totalCount/blockSize):((totalCount/blockSize)+1));
 	}
 	public List<?> getList() {
 		return list;

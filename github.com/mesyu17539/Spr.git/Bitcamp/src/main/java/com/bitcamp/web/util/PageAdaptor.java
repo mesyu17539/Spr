@@ -7,20 +7,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.bitcamp.web.domain.Command;
 import com.bitcamp.web.domain.Page;
+import com.bitcamp.web.service.IGetService;
 
 import lombok.Data;
 
 @Component
 public class PageAdaptor {
 	public Object attr(Page page) {
-		page.setTotalCount(0);
 		page.setTotalPageCount(0);
 		page.setEndRow(0);
 		page.setStartRow(0);
 		page.setStartPage(0);
 		page.setEndPage(0);
-		return "";
+		return page;
 	}
 	/* BlockEnd 1 = pageEnd 5
 	 * BlockEnd 2 = pageEnd10
