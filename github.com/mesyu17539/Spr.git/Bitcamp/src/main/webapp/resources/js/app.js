@@ -74,7 +74,19 @@ app.nav=(()=>{
 					val:'글쓰기'}))
 					.on('click',e=>{
 						e.preventDefault();
-						app.board.write();
+						$.magnificPopup.open(
+				                {items: {src: boardWriting({id:'board-writing',clazz:'board-writing'})}, type : 'inline'}, 0);
+						
+						
+						
+						$('<a href="#"  class="popup-with-form"><button>파일전송</button></a>')
+						.appendTo('#div-btn-group')
+						.on('click',e=>{
+							e.preventDefault();
+							$.magnificPopup.open(
+									{items: {src: fileupload({id:'board-writing',clazz:'board-writing'})}, type : 'inline'}, 0);
+						})
+//						app.board.write();
 					})
 				);
 				app.board.onCreate();
@@ -95,9 +107,6 @@ app.board=(x=>{
 		articles(1);
 	}
 	var write =()=>{
-		alert('끌쓴이');
-		$.magnificPopup.open(
-                {items: {src: boardWriting({clazz:'board-writing'})}, type : 'inline'}, 0);
 		
 //		$.getJSON(context+'/write',d=>{
 //			
