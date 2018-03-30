@@ -4,10 +4,85 @@ app = {init:x=>{
 		$.getScript(x+'/resources/js/router.js',()=>{
 //					함수 이용하기▽
 			$.extend(new Router(x));
+			app.nav.onCreate();
 			app.algorithm.onCreate();
 			app.member.onCreate();
 		})
-	}};
+	}
+};
+app.home={
+		move:x=>{
+			app.member.onCreate();
+		}
+};
+app.nav=(()=>{
+	var $wrapper,context,algorithm,view,iamge;
+	var onCreate=()=>{
+		$wrapper =$('#wrapper');
+		context = $.context();
+		image=$.image();
+		algo=$.javascript()+'/algo.js';
+		view=$.javascript()+'/view.js';
+		setContentView();
+	};
+	var setContentView=()=>{
+		$wrapper.empty();
+		$.getScript(view,()=>{
+//			람다 ALL : 이해하기 어렵다
+			$wrapper.html(navigtion());
+			
+			$(createDiv({id:'container',clazz:'container text-center'}))
+			.attr('style', 'background-color: white; padding: 50px')
+			.appendTo($wrapper);
+			$('#container')
+			.html($(createDiv({id:'content',clazz:'content text-center'})));
+			
+			$(createButtonNav1st())
+			.appendTo('#div-nav-list-box')
+			.click(()=>{
+				alert('button 클릭');
+			});
+			$('#li-home')
+			.click(()=>{
+				alert('home 클릭');
+				app.home.move();
+			});
+//				오버라이딩
+			$(createATag({link:'#',id:'a-login',link:'#',val:createSpan({clazz:'glyphicon-user',val:'로그인'})}))
+			.appendTo('#li-login')
+			.click(()=>{
+				alert('Login btn Click');
+				app.member.onCreate();
+			});
+			
+			$(createATag({
+				id:'a-board',
+				link:'#',
+				val:createSpan({
+					id:'span-board',
+					clazz:'glyphicon-blackboard',
+					val:'보드'}),
+				link:'#'}))
+			.appendTo('#li-board');
+			$('#span-board')
+			.click(()=>{
+				alert('보드 btn Click');
+				$('#span-board').remove();
+				$('#a-board')
+				.html($(createSpan({
+					clazz:'glyphicon-blackboard',
+					val:'글쓰기'}))
+					.on('click',e=>{
+						e.preventDefault();
+						app.board.write();
+					})
+				);
+				app.board.onCreate();
+			});
+		});
+	}
+	return {onCreate:onCreate}
+})();
 app.board=(x=>{
 	var onCreate=()=>{
 		$wrapper =$('#wrapper');
@@ -19,6 +94,15 @@ app.board=(x=>{
 	var setContentView=()=>{
 		articles(1);
 	}
+	var write =()=>{
+		alert('끌쓴이');
+		$.magnificPopup.open(
+                {items: {src: boardWriting({clazz:'board-writing'})}, type : 'inline'}, 0);
+		
+//		$.getJSON(context+'/write',d=>{
+//			
+//		});
+	}
 	var articles =x=>{
 		$.getJSON(context+'/articles/'+x,d=>{
 			$.getScript(context+'/resources/js/view.js',()=>{
@@ -27,7 +111,7 @@ app.board=(x=>{
                     id: 'articles', 
                     clazz:''
                 }))
-				.attr('style','margin:50px auto')
+                .attr('style', 'width:100%')
                 .appendTo('#content');
                 
                 $(createTh({
@@ -52,13 +136,16 @@ app.board=(x=>{
                 			.append($('<button>삭제</button>')
                 			.attr('onClick','alert("'+$('#td_'+i+'_1').text()+'")')));
                 }
-                $(createNav({id:'nav-page',clazz:''}))
-                .appendTo('#content');
+
+//                $(createDiv({id:'nav-page',clazz:'content'}))
+//                .appendTo('#content');
+//                $(createNav({id:'nav-page',clazz:''}))
+//                .appendTo('#content');
                 $(createUL({id:'ul-page',clazz:'pagination'}))
-                .appendTo('#nav-page');
+                .appendTo('#content');
                 if(d.page.startPage!=1){
                 	$(createLI({id:'li-prev',clazz:''}))
-                	.attr('style','margin:50px auto')
+                	
                 	.appendTo('#ul-page');
                 	$(createATag({link:'#',id:'a-prev',val:' '}))
                 	.attr('onClick','app.board.articles('+((d.page.startPage)-1)+'); return false;')
@@ -98,7 +185,7 @@ app.board=(x=>{
 			});
 		});
 	}
-	return {articles:articles,onCreate:onCreate}
+	return {articles:articles,onCreate:onCreate,write:write}
 })();
 app.board2={
 		articles : x=>{
@@ -116,7 +203,6 @@ app.board2={
 	                    id: 'articles', 
 	                    clazz:''
 	                }))
-					.attr('style','margin:50px auto')
 	                .appendTo('#content');
 	                
 	                $(createTh({
@@ -138,7 +224,7 @@ app.board2={
 	                $(createNav({id:'nav-page',clazz:''}))
 	                .appendTo('#content');
 	                $(createUL({id:'ul-page',clazz:'pagination'}))
-					.attr('style','margin:50px auto')
+					
 	                .appendTo('#nav-page');
 	                if(d.page.startPage!=1){
 	                	$(createLI({id:'li-prev',clazz:''}))
@@ -193,11 +279,11 @@ app.member=(()=>{
 	};
 	var setContentView=()=>{
 		$.getScript(view,()=>{
-			$(createDiv({id:'content',clazz:'login-content'}))
-			.attr('style','width:80%;height:400px;margin:50px auto')
-			.appendTo('#container');
+			$('#container')
+			.html($(createDiv({id:'content',clazz:'container text-center'}))
+					.attr('style','width:80%;height:400px;margin:50px auto'));
 			$(loginOutBox('login-inner-table'))
-			.attr('style','margin:50px auto')
+			.attr('style', 'margin:50px auto')
 			.appendTo('#content');
 			$(loginInBox('login-inner-table'))
 			.appendTo('#inbox-position');
@@ -205,41 +291,42 @@ app.member=(()=>{
 			.appendTo('#div-login-btn')
 			.on('click',e=>{
 				e.preventDefault();//없으면 입력된값만 가져가므로 처리해야함.
-				var userid=$('#index_input_id').val();
-				var jason={
-                        'pass' : $('#index_input_password').val()};
-				$.ajax({
-					url:context+'/members/'+userid+'/login',
-					method:'POST',
-					data:JSON.stringify(jason),
-					dataType:'json',
-					contentType:'application/json',
-					success : x =>{
-                        alert('로그인');
-                        if(x.success==='1'){
-//                        	var jason = x.user; //추가 할게 없다면 주석 풀며 토스.
-                            var jason = {
-                                    'id' : x.user.id,
-                                    'name':x.user.name,
-                                    'ssn':x.user.ssn,
-                                    'phone':x.user.phone,
-                                    'email':x.user.email,
-                                    'addr':x.user.addr,
-                                    'pass' : x.user.pass,
-                                    'profile':x.user.profile};
-                            mypage(jason);
-                        }else{
-                            alert('로그인 실패');
-                        }
-                    },
-                    error : (x,h,m)=>{
-                        alert('로그인에서 에러발생 x='+x+', h='+h+', m='+m);
-                    }
-				});
+				login();
 			});
 		});
 	};
-	var login=x=>{
+	var login=()=>{
+		var userid=$('#index_input_id').val();
+		var jason={
+				'pass' : $('#index_input_password').val()};
+		$.ajax({
+			url:context+'/members/'+userid+'/login',
+			method:'POST',
+			data:JSON.stringify(jason),
+			dataType:'json',
+			contentType:'application/json',
+			success : x =>{
+				alert('로그인');
+				if(x.success==='1'){
+//                        	var jason = x.user; //추가 할게 없다면 주석 풀며 토스.
+					var jason = {
+							'id' : x.user.id,
+							'name':x.user.name,
+							'ssn':x.user.ssn,
+							'phone':x.user.phone,
+							'email':x.user.email,
+							'addr':x.user.addr,
+							'pass' : x.user.pass,
+							'profile':x.user.profile};
+					mypage(jason);
+				}else{
+					alert('로그인 실패');
+				}
+			},
+			error : (x,h,m)=>{
+				alert('로그인에서 에러발생 x='+x+', h='+h+', m='+m);
+			}
+		});
 		
 	};
 	var mypage=x=>{
@@ -274,35 +361,8 @@ app.algorithm=(()=>{
 		setContentView();
 	};
 	var setContentView=()=>{
-		$wrapper.empty();
 		$.getScript(view,()=>{
 //			람다 ALL : 이해하기 어렵다
-			$wrapper.html(navigtion());
-			
-			$(createDiv({id:'container',clazz:'contanier'}))
-			.attr('style', 'background-color: white; padding: 50px')
-			.appendTo($wrapper);
-			
-				$(createButtonNav1st())
-				.appendTo('#div-nav-list-box')
-				.click(()=>{
-					alert('button 클릭');
-				});
-//				오버라이딩
-				$(createATag({link:'#',id:'a-login',link:'#',val:createSpan({clazz:'glyphicon-user',val:'로그인'})}))
-				.appendTo('#li-login')
-				.click(()=>{
-					alert('Login btn Click');
-					app.member.onCreate();
-				});
-				
-				$(createATag({link:'#',val:createSpan({clazz:'glyphicon-blackboard',val:'보드'}),link:'#'}))
-				.appendTo('#li-board')
-				.click(()=>{
-					alert('보드 btn Click');
-					 app.board.onCreate();
-				});
-				
 				$(createATag({link:'#',val:'수열',link:'#'}))
 				.appendTo('#li-sequence')
 				.click(()=>{
@@ -312,9 +372,9 @@ app.algorithm=(()=>{
 					$('#container')
 							.html($(createDiv({id:'content',clazz:'content'})));
 							$('#content')
-							.css({'margin-top':'50px',
-								'width':'80%'
-							})
+//							.css({'margin-top':'50px',
+//								'width':'80%'
+//							})
 							.append(sequenceContext());
 							$('#td-algo-arith').html($(createATag({link:'#',val:'등차수열의 합 : 1+2+3+4+..+100'}))
 									.attr('style','margin-top:50px')
@@ -419,12 +479,10 @@ app.algorithm=(()=>{
 				.appendTo('#li-math')
 				.click(()=>{
 					$.getScript(algo,()=>{
-						$('#container')
-						.html($(createDiv({id:'content',clazz:'content'})));
 						$('#content')
-						.css({'margin-top':'50px',
-							'width':'80%'
-						})
+//						.css({'margin-top':'50px',
+//							'width':'80%'
+//						})
 						.append($(createMetrixTab({id:'test',clazz:'boardered',json:findByMath(),txt:'수학'})));
 //						'소수의 합 구하기','최대공약수','소인수 분해하기','최대값 최소값 구하기',
 //						'5의 배수의 개수와 합','7에 가장 가까운 수 구하기','화폐','사과',

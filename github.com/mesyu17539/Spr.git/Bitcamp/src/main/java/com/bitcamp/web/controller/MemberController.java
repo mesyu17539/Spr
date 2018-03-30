@@ -120,6 +120,12 @@ public class MemberController {
 		map.put("page", page);
 		return map;
 	}
+	@RequestMapping(value="/write")
+	public Map<?,?> Write(){
+		Map<String,	Object> map=new HashMap<>();
+		logger.info("Write {}","써라써");
+		return map;
+	}
 	@RequestMapping(value="/board/{seq}",
 			method=RequestMethod.GET,
 			consumes="application/json")
