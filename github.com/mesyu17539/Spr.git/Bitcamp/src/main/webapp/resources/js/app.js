@@ -74,18 +74,87 @@ app.nav=(()=>{
 					val:'글쓰기'}))
 					.on('click',e=>{
 						e.preventDefault();
-						$.magnificPopup.open(
-				                {items: {src: boardWriting({id:'board-writing',clazz:'board-writing'})}, type : 'inline'}, 0);
-						
-						
-						
+						$('#content').html(
+								$(createForm({id:'form-write'}))
+								.append(boardWriting({id:'board-writing',clazz:'board-writing',user:'ㅊㅊㅊ'}))
+						);
+						$('#submit-btn')
+						.on('click',e=>{
+							e.preventDefault();
+							$.ajax({
+								url:context+'/board/post/article',
+								data:JSON.stringify({
+									id : $('#input-name').val(),
+									title : $('#input-title').val(),
+									content:$('#input-content').text()//get 방식
+								}),
+								dataType:'json',
+								contentType:'application/json',
+								method:'POST',
+								success : x =>{
+									alert('성공');
+									$('#form-write').ajaxForm({
+										url:context+'/board/post/article',
+										dataType:'json',
+										enctype:"multipart/form-data",
+										beforeSubmit:function(){
+											alert("로딩화면 : ");
+										},
+										success:function(data){
+											alert("등록완료 ! "+data.result);
+										}
+									}).submit();
+								},
+								error : function(x,s,m){alert(m);}
+							});
+						});
 						$('<a href="#"  class="popup-with-form"><button>파일전송</button></a>')
 						.appendTo('#div-btn-group')
 						.on('click',e=>{
 							e.preventDefault();
 							$.magnificPopup.open(
-									{items: {src: fileupload({id:'board-writing',clazz:'board-writing'})}, type : 'inline'}, 0);
-						})
+									{items: {src: 
+										$(createForm({
+											id:'form-fileupload',
+											clazz:'container popup',
+											action:context+'/board/file/upload'
+										})).html(
+												$(fileupload({id:'board-fileupload',clazz:'popup'})))
+										}, type : 'inline'}, 0);
+							
+							$('#btn-group')
+							.append($('<input style="display: inline-block;" size="30" name="file" type="file" placeholder="ATTACH FILES" />')
+									.on('click',e=>{alert('후하');}))
+							.append($(createInput({id:'submit btn',clazz:'', type:'submit'}))
+									.on('click',e=>{
+										alert('submit');
+										$('#form-fileupload').ajaxForm({
+											url:context+'/board/file/upload',
+											dataType:'json',
+											enctype:"multipart/form-data",
+											beforeSubmit:function(){
+												alert("로딩화면 : ");
+											},
+											success:function(data){
+												alert("등록완료 ! "+data.result);
+											}
+										}).submit();
+										}))
+							.append($(createInput({id:'reset btn',clazz:'', type:'reset'}))
+									.on('click',e=>{alert('하히');}))
+							;
+;
+							
+//							$('<input style="display: inline-block;" size="30" name="file" type="file" placeholder="ATTACH FILES" />')
+//							.appendTo('#file')
+//							.on('click',e=>{alert('후하');});
+//							$(createInput({id:'attach btn',clazz:'', type:'submit'}))
+//							.appendTo('#file')
+//							.on('click',e=>{alert('히하');});
+//							$(createInput({id:'attach btn',clazz:'', type:'reset'}))
+//							.appendTo('#file')
+//							.on('click',e=>{alert('하히');});
+						});
 //						app.board.write();
 					})
 				);
@@ -300,7 +369,7 @@ app.member=(()=>{
 			.appendTo('#div-login-btn')
 			.on('click',e=>{
 				e.preventDefault();//없으면 입력된값만 가져가므로 처리해야함.
-				login();
+				login();//기존
 			});
 		});
 	};

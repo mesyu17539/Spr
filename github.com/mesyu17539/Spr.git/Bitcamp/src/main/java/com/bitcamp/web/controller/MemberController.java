@@ -1,9 +1,12 @@
 package com.bitcamp.web.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.bitcamp.web.domain.Board;
 import com.bitcamp.web.domain.Command;
@@ -22,6 +26,7 @@ import com.bitcamp.web.domain.Page;
 import com.bitcamp.web.mapper.Mapper;
 import com.bitcamp.web.service.ICountService;
 import com.bitcamp.web.service.IGetService;
+import com.bitcamp.web.util.FileProxy;
 import com.bitcamp.web.util.PageAdaptor;
 
 //resController을 사용하여 SOP방식을 사용하게 해야된다.
@@ -141,6 +146,33 @@ public class MemberController {
 	public Map<?,?> putBoard(
 			@PathVariable String seq){
 		Map<String,	Object> map=new HashMap<>();
+		return map;
+	}
+	@RequestMapping(value="/board/post/article",
+			method=RequestMethod.POST,
+			consumes="application/json")
+	public Map<?,?> postArticle(
+			@RequestBody Board board){
+		Map<String,	Object> map=new HashMap<>();
+		System.out.println("넘어온 ID : "+board.getId());
+		System.out.println("넘어온 Title : "+board.getTitle());
+		System.out.println("넘어온 Content : "+board.getContent());
+		return map;
+	}
+	@RequestMapping(value="/board/file/upload",
+			method=RequestMethod.POST)
+	public Map<?,?> boardFileUpload()throws IllegalStateException, IOException {
+		logger.info("BoardController fileupload");
+		//어플리케이션 컨텍스트의 bean으로 인해 파일명 사용할수 있다.
+		FileProxy pxy=new FileProxy();
+//				pxy.getFile().getOriginalFilename();
+//		String path=ImageRepo.UPLOAD_PATH.toString()+fileName;
+//		File files=new File(path);
+//		pxy.getFile().transferTo(files);
+		Map<String,	Object> map=new HashMap<>();
+		System.out.println("넘어온 ID : ");
+		System.out.println("넘어온 Title : ");
+		System.out.println("넘어온 Content : ");
 		return map;
 	}
 }

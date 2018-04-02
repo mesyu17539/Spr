@@ -14,6 +14,8 @@
 		<slf4j-version>1.7.7</slf4j-version>
 		<lombok-version>1.16.8</lombok-version>
 		<jackson-version>2.6.3</jackson-version>
+		<commons-fileupload-version>1.3.1</commons-fileupload-version>
+		<commons-io-version>2.4</commons-io-version>
 	</properties>
 	<repositories>
 		<repository>
@@ -23,7 +25,17 @@
 	</repositories>
 
 	<dependencies>
-	
+		<!-- 파일업로드 -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>${commons-fileupload-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io-version}</version>
+        </dependency>
 		<!-- MARIADB lombock까지 -->
 		<dependency>
 		  <groupId>org.mariadb.jdbc</groupId>

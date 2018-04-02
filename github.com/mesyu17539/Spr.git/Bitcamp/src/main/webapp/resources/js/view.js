@@ -1,15 +1,20 @@
+var createForm=x=>{
+	return '<form id="'+x.id+'" class="'+x.clazz+'" action="'+x.action+'" method="post"></form>'
+}
+var createInput=x=>{
+	return '<input id="'+x.id+'" class="'+x.clazz+'" type="'+x.type+'"/>';
+}
 var fileupload=x=>{
 	return '  <div id="'+x.id+'" class="'+x.clazz+'">'
-	+'    <h1>ATTACH FILES</h1>'
-	+'  <h2>ATTACH UP TO 10 files at a time Total.... 200MB</h2>'
+	+'    		<h1>ATTACH FILES</h1>'
+	+'  		<h2>ATTACH UP TO 10 files at a time Total.... 200MB</h2>'
 	+'  <div class="row">'
 	+'    <div class="col-md-6 col-md-offset-3">'
-	+'      <input style="display: inline-block;" size="30" name="file" type="file" placeholder="ATTACH FILES" />'
+	+'		<div id="btn-group" class="form-control display-inline">'
+	+' 	 	<!-- link that opens popup -->'
+	+'		</div>'
 	+'    </div>'
 	+'  </div>'
-	+'  <button>Cancel</button>'
-	+'  <button>ATTACH BTN</button>'
-	+'  <!-- link that opens popup -->'
 	+'</div>'
 }
 
@@ -21,10 +26,12 @@ var boardWriting=x=>{
 	+'    <!-- 글번호, 제목, 작성자, 작성일 -->'
 	+'        <div class="form-group">'
 	+'            <label for="usr">제목</label>'
-	+'            <input name="brotitle" type="text" class="form-control"><br/>'
+	+'            <input id="input-title" name="brotitle" type="text" class="form-control"><br/>'
 	+'            <label for="comment">내용</label>'
-	+'                  <textarea name="brocontent" id="contents" class="form-control" rows="15" ></textarea>'
+	+'                  <textarea name="brocontent" id="input-content" class="form-control" rows="15" ></textarea>'
 	+'                  <img src="#" style="width: 80px;height: 80px;" alt="" />'
+	+'            <label for="comment">작성자</label>'
+	+'            <input id="input-name" name="brotitle" type="text" class="form-control" val="'+x.user+'"><br/>'
 	+'        </div>'
 	
 	+'    <div class="row">'
