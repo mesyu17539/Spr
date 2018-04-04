@@ -286,7 +286,7 @@ function navigtion(){
 	
 	+'            </a></li>'
 	+'            <li id="li-board"></li>'
-	+'        <!-- 드롭다운 START-->'
+	+'        <!-- 드롭다운 수열 START-->'
 	+'        <li class="dropdown">'
 	+'          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true" +aria-expanded="false">'
 	+'            유틸리티'
@@ -300,11 +300,28 @@ function navigtion(){
 	+'            <li id="li-application" href="#"></li>'
 	+'          </ul>'
 	+'        </li>'
+	+'        <!-- 검색 START-->'
+	+'          <li id="li-search-option">'
+	+'				<form id="form-search" class="navbar-form navbar-left" role="search">'
+	+'      		  <div id="div-search" class="form-group">'
+    +'      		  </div>'
+    +'     		 	</form>'
+    +'			</li>'
 	+'        <!-- 드롭다운 END -->'
 	+'          </ul>'
 	+'        </div>'
 	+'      </div>'
 	+'    </nav>'
+}
+var createSelect=x=>{
+	return '<select id="'+x+'" name="'+x+'"></select>'
+}
+var createOption=x=>{
+	var o='';
+	$.each(x,(i, j)=>{
+		o+='<option value="'+j.param+'">'+j.val+'</option>'
+	});
+	return o
 }
 function createButtonNav1st(){
 	return '<button id="btn-nav-list" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" +aria-expanded="false" aria-controls="navbar">'

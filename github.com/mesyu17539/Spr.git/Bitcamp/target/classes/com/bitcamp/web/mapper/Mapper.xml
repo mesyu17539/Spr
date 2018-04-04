@@ -3,6 +3,102 @@
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bitcamp.web.mapper.Mapper">
+	<resultMap type="com.bitcamp.web.domain.Member" id="member">
+		<id property="id" column="id"/>
+		<result property="pass" column="pass"/>
+		<result property="name" column="name"/>
+		<result property="ssn" column="ssn"/>
+		<result property="phone" column="phone"/>
+		<result property="email" column="email"/>
+		<result property="profile" column="profile"/>
+		<result property="addr" column="addr"/>
+	</resultMap>
+	<resultMap type="java.util.HashMap" id="map">
+		<id property="id" column="id"/>
+		<result property="pass" column="pass"/>
+		<result property="name" column="name"/>
+		<result property="ssn" column="ssn"/>
+		<result property="phone" column="phone"/>
+		<result property="email" column="email"/>
+		<result property="profile" column="profile"/>
+		<result property="addr" column="addr"/>
+	</resultMap>
+	<resultMap type="com.bitcamp.web.domain.Admin" id="admin">
+		<id property="admID" column="adm_id"/>
+		<result property="admPass" column="pass"/>
+	</resultMap>
+	<select id="searchAll" resultMap="map" parameterType="hashMap">
+    SELECT *
+    FROM ${type}
+    WHERE
+    	<if test="name != null">
+    		name = #{name} 
+    	</if>
+    	<if test="phone != null">
+    		phone = #{phone} 
+    	</if>
+    	<if test="ssn != null">
+    		ssn = #{ssn} 
+    	</if>
+    	<if test="email != null">
+    		email = #{email} 
+    	</if>
+    	<if test="profile != null">
+    		profile = #{profile} 
+    	</if>
+    	<if test="addr != null">
+    		addr = #{addr} 
+    	</if>
+	${colum} LIKE #{data}
+    </select>
+    <select id="searchAdminById" resultMap="admin" parameterType="hashMap">
+    SELECT * 
+    FROM ${type}
+    WHERE
+    	<if test="name != null">
+    		name = #{name} 
+    	</if>
+    	<if test="phone != null">
+    		phone = #{phone} 
+    	</if>
+    	<if test="ssn != null">
+    		ssn = #{ssn} 
+    	</if>
+    	<if test="email != null">
+    		email = #{email} 
+    	</if>
+    	<if test="profile != null">
+    		profile = #{profile} 
+    	</if>
+    	<if test="addr != null">
+    		addr = #{addr} 
+    	</if>
+	${colum} LIKE #{data}
+    </select>
+	<select id="searchMemberById" resultMap="member" parameterType="hashMap">
+    SELECT id, pass, name,ssn,phone, email,profile, addr 
+    FROM ${type}
+    WHERE
+    	<if test="name != null">
+    		name = #{name} 
+    	</if>
+    	<if test="phone != null">
+    		phone = #{phone} 
+    	</if>
+    	<if test="ssn != null">
+    		ssn = #{ssn} 
+    	</if>
+    	<if test="email != null">
+    		email = #{email} 
+    	</if>
+    	<if test="profile != null">
+    		profile = #{profile} 
+    	</if>
+    	<if test="addr != null">
+    		addr = #{addr} 
+    	</if>
+	${colum} LIKE #{data}
+    </select>
 	<select id="addImage" parameterType="com.bitcamp.web.domain.Image">
     INSERT INTO IMAGE VALUES(${imageId},${imageId},${imageId},now())
     </select>
@@ -30,10 +126,38 @@
 			WHERE #{iData2} >= ro.rownu ) result
 	WHERE result.rownu >= #{iData1} ;
     </select>
-    <select id="selectById" resultType="com.bitcamp.web.domain.Member" parameterType="com.bitcamp.web.domain.Command">
+    <select id="updateMember" resultMap="member" parameterType="com.bitcamp.web.domain.Member">
+    UPDATE ${type}
+    <set>
+    	<if test="pass != null">
+    		pass = #{pass},
+    	</if>
+    	<if test="phone != null">
+    		phone = #{phone},
+    	</if>
+    	<if test="email != null">
+    		email = #{email},
+    	</if>
+    	<if test="profile != null">
+    		profile = #{profile},
+    	</if>
+    	<if test="addr != null">
+    		addr = #{addr}
+    	</if>
+    </set>
+    WHERE ${colum} LIKE #{data}
+    </select>
+    <select id="selectByKeyword"
+     resultMap="member"
+     parameterType="hashMap">
     SELECT * 
-    FROM MEMBER 
-    WHERE ID LIKE #{data1} AND PASS LIKE #{data2}
+    FROM ${type}
+    WHERE ${colum} LIKE #{data}
+    </select>
+    <select id="selectByName" resultMap="member" parameterType="hashMap">
+    SELECT * 
+    FROM ${type}
+    WHERE ${id} LIKE #{data1} AND ${pass} LIKE #{data2} 
     </select>
     <select id="selectAdminCount" resultType="int" parameterType="com.bitcamp.web.domain.Command">
     SELECT COUNT(*) FROM MEMBER WHERE ID LIKE #{data1} AND PASS LIKE #{data2}

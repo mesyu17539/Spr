@@ -10,6 +10,30 @@ app = {init:x=>{
 		})
 	}
 };
+
+	
+	
+app.cookie={
+		setCookie:x=>{
+			document.cookie=x.key+"=" + x.val
+		},
+		getCookie:x=>{
+			var name=x.key + "=";
+			var res = document.cookie.split(';');
+			for(var i=0;i<res.length;i++){
+				var t=res[i];
+				while(t.charAt(0)==' '){
+					t = t.substring(1,t.length);
+					if(t.indexOf(name)==0){
+						return t.substring(name.length,t.length);
+					}
+				}
+			}
+		},
+		removeCookie:x=>{
+			createCookie(name,"",-1);
+		}
+}
 app.rgx={
 		isNumber : x=>{
 			return typeof x ==='number' && isFinite(x);
@@ -63,6 +87,38 @@ app.nav=(()=>{
 				alert('home 클릭');
 				app.home.move();
 			});
+			$('#div-search')
+			.append($(createSelect('user'))
+					.append(createOption(
+							[
+								{param:'member',val:'회원'},
+								{param:'admin',val:'관리자'}
+							])))
+			.append('<input id="tex" type="text" class="form-control" placeholder="Search">');
+			$('<button type="submit" class="btn btn-default">검 색</button>')
+			.appendTo('#form-search')
+			.on('click',e=>{
+				e.preventDefault();
+				var user=$('#user').val();
+				alert('검색 실행 u : '+user);
+				$.ajax({
+					url:context+'/search/'+user,
+					data:JSON.stringify({
+						type : user,
+						data : $('#tex').val()
+					}),
+					dataType:'json',
+					contentType:'application/json',
+					method:'POST',
+					success : x =>{
+						alert('끝');
+						
+					},
+					error : function(x,s,m){alert(m);}
+				});
+			});
+			
+			
 //				오버라이딩
 			$(createATag({link:'#',id:'a-login',link:'#',val:createSpan({clazz:'glyphicon-user',val:'로그인'})}))
 			.appendTo('#li-login')
@@ -157,9 +213,9 @@ app.nav=(()=>{
 										}).submit();
 										}))
 							.append($(createInput({id:'reset btn',clazz:'', type:'reset'}))
-									.on('click',e=>{alert('reset');}))
-							;
-;
+									.on('click',e=>{alert('reset');}));
+							
+
 							
 //							$('<input style="display: inline-block;" size="30" name="file" type="file" placeholder="ATTACH FILES" />')
 //							.appendTo('#file')

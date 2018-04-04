@@ -33,6 +33,7 @@ import com.bitcamp.web.domain.Page;
 import com.bitcamp.web.mapper.Mapper;
 import com.bitcamp.web.service.ICountService;
 import com.bitcamp.web.service.IGetService;
+import com.bitcamp.web.service.ISerachService;
 import com.bitcamp.web.util.FileProxy;
 import com.bitcamp.web.util.PageAdaptor;
 
@@ -49,6 +50,42 @@ public class MemberController {
 	@Autowired Image image;
 	
 	
+	@RequestMapping(value="/search/{keyword}")
+	public Object searchOne(
+			@PathVariable("keyword") String keyword,//여러개 있으면 ("") 해줘야함
+			@RequestBody HashMap<String, String> param
+			){
+		Map<String,Object> map=new HashMap<>();
+		logger.info("welcom {}","search "+keyword);
+		Object o=null;
+		switch (param.get("type")) {
+		case "member":
+			System.out.println("mem");
+			param.put("colum", "id");
+			o= new ISerachService() {
+				@Override
+				public Object excute(HashMap<?, ?> param) {
+					return mapper.searchAll(param);
+				}
+			}.excute(param);
+			break;
+		case "admin":
+			System.out.println("adm");
+			param.put("colum", "adm_id");
+			o=  new ISerachService() {
+				@Override
+				public Object excute(HashMap<?, ?> param) {
+					// TODO Auto-generated method stub
+					return mapper.searchAll(param);
+				}
+			}.excute(param);
+			break;
+		default:
+			break;
+		}
+		System.out.println("넘길 값 : "+o);
+		return o;
+	}
 	@RequestMapping(value="/admin",
 			method=RequestMethod.POST,
 			consumes="application/json")
