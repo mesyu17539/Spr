@@ -1,12 +1,16 @@
 package com.bitcamp.web.controller;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +21,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.bitcamp.web.domain.Admin;
 import com.bitcamp.web.domain.Board;
 import com.bitcamp.web.domain.Command;
+import com.bitcamp.web.domain.Image;
 import com.bitcamp.web.domain.Member;
 import com.bitcamp.web.domain.Page;
 import com.bitcamp.web.mapper.Mapper;
@@ -39,11 +46,35 @@ public class MemberController {
 	@Autowired Command cmd;
 	@Autowired Page page;
 	@Autowired PageAdaptor adapter;
+	@Autowired Image image;
+	
+	
+	@RequestMapping(value="/admin",
+			method=RequestMethod.POST,
+			consumes="application/json")
+	public /*@ResponseBody*/ Map<?,?> admin(
+			@RequestBody Admin a){
+		Map<String,Object> map=new HashMap<>();
+		logger.info("welcom {}","admin");
+		logger.info("id {}",a.getAdmID());
+		cmd=new Command();
+		cmd.setData1(a.getAdmID());
+		map.put("admin",(Admin) new IGetService() {
+			
+			@Override
+			public Object execute(Command cmd) {
+				// TODO Auto-generated method stub
+				return mapper.selectAdmin(cmd);
+			}
+		}.execute(cmd));
+		return map;
+	}
 //	restful 방식 : 쿼리스트링을 날리는 방식. post로 보안 조치
-	@RequestMapping(value="/members/{userid}/login",
+	@RequestMapping(value="/{type}/{userid}/login",
 			method=RequestMethod.POST,
 			consumes="application/json")
 	public /*@ResponseBody*/ Map<?,?> login(
+			@PathVariable String type,
 			@PathVariable String userid,
 			@RequestBody Member m){
 		Map<String,Object> map=new HashMap<>();
@@ -51,38 +82,61 @@ public class MemberController {
 		logger.info("id {}",userid);
 		logger.info("pass {}",m.getPass());
 		cmd=new Command();
+		cmd.setType(type);
+		switch (type) {
+		case "member":
+			cmd.setId("id");
+			cmd.setPass("pass");
+			break;
+		case "admin":
+			cmd.setId("admID");
+			cmd.setPass("pass");
+			break;
+		default:
+			break;
+		}
 		cmd.setData1(userid);
 		cmd.setData2(m.getPass());
-//		map.put("success", ""+new ICountService() {
-//			@Override
-//			public int excute(Command cmd) {
-//				// TODO Auto-generated method stub
-//				return mapper.exist(cmd);
-//			}
-//		}.excute(cmd));
-		int count = new ICountService() {
+		int count=new ICountService() {
 			@Override
 			public int excute(Command cmd) {
 				// TODO Auto-generated method stub
-				
 				return mapper.exist(cmd);
 			}
 		}.excute(cmd);
+		
 		System.out.println("count : "+count);
 		map.put("success", count+"");
 		System.out.println("success : "+map.get("success"));
 		
 		if(count==1) {
 			System.out.println("저장? : "+count);
-			map.put("user", (Member) new IGetService() {
-				
-				@Override
-				public Object execute(Command cmd) {
-					// TODO Auto-generated method stub
-					return mapper.selectById(cmd);
-				}
-			}.execute(cmd));
-			System.out.println("user : "+map.get("user"));
+			switch (type) {
+			case "member":
+				map.put("user", (Member) new IGetService() {
+					
+					@Override
+					public Object execute(Command cmd) {
+						// TODO Auto-generated method stub
+						return mapper.selectById(cmd);
+					}
+				}.execute(cmd));
+				System.out.println("user : "+map.get("user"));
+				break;
+			case "admin":
+				map.put("admin",(Admin) new IGetService() {
+					
+					@Override
+					public Object execute(Command cmd) {
+						// TODO Auto-generated method stub
+						return mapper.selectAdmin(cmd);
+					}
+				}.execute(cmd));
+				System.out.println("admin : "+map.get("admin"));
+				break;
+			default:
+				break;
+			}
 		}
 		return map;
 	}
@@ -161,15 +215,28 @@ public class MemberController {
 	}
 	@RequestMapping(value="/board/file/upload",
 			method=RequestMethod.POST)
-	public Map<?,?> boardFileUpload()throws IllegalStateException, IOException {
-		logger.info("BoardController fileupload");
+	public Map<?,?> boardFileUpload(
+			MultipartHttpServletRequest request
+			,HttpSession session
+			)throws IllegalStateException, IOException {
+		Map<String,	Object> map=new HashMap<>();
+		logger.info("MemberController fileupload");
 		//어플리케이션 컨텍스트의 bean으로 인해 파일명 사용할수 있다.
 		FileProxy pxy=new FileProxy();
+		Iterator<String> it=request.getFileNames();
+		if(it.hasNext()) {
+			MultipartFile file=request.getFile(it.next());
+			String rootPath=request.getSession().getServletContext().toString();
+			String uploadPath="resources/image/";
+			String filename=file.getOriginalFilename();
+			image.setImageID(
+					new SimpleDateFormat("yyMMdd_hhmmss_").format(new Date()));
+			image.setFilename(filename);
+		}
 //				pxy.getFile().getOriginalFilename();
 //		String path=ImageRepo.UPLOAD_PATH.toString()+fileName;
 //		File files=new File(path);
 //		pxy.getFile().transferTo(files);
-		Map<String,	Object> map=new HashMap<>();
 		System.out.println("넘어온 ID : ");
 		System.out.println("넘어온 Title : ");
 		System.out.println("넘어온 Content : ");

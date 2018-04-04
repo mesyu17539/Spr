@@ -10,6 +10,6 @@ import lombok.Data;
 @Component
 @Lazy
 public class Command{
-	protected String data1,data2;
+	protected String data1,data2,id,pass,type;
 	protected int iData1,iData2;
 }

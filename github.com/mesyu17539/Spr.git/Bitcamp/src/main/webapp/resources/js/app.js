@@ -10,6 +10,22 @@ app = {init:x=>{
 		})
 	}
 };
+app.rgx={
+		isNumber : x=>{
+			return typeof x ==='number' && isFinite(x);
+//			넘버라는 타입을 찾아주는 리턴
+		},
+		passwordChecker : x=>{
+			var r=/^[0-9a-zA-z]{4,10}$/;
+			return r.test(x)?"yes":"no";
+//			숫자, 영문 대소문자, 4 ~ 10자리까지 입력 가능. 형식이 맞지 않으면 에러를 띄운다
+		},
+		adminChecker : x=>{
+			var r=/^[0-9]{1,4}/;
+			return r.test(x)?"yes":"no";
+//			숫자, 영문 대소문자, 4 ~ 10자리까지 입력 가능. 형식이 맞지 않으면 에러를 띄운다
+		}
+}
 app.home={
 		move:x=>{
 			app.member.onCreate();
@@ -124,7 +140,7 @@ app.nav=(()=>{
 							
 							$('#btn-group')
 							.append($('<input style="display: inline-block;" size="30" name="file" type="file" placeholder="ATTACH FILES" />')
-									.on('click',e=>{alert('후하');}))
+									.on('click',e=>{alert('파일등록');}))
 							.append($(createInput({id:'submit btn',clazz:'', type:'submit'}))
 									.on('click',e=>{
 										alert('submit');
@@ -141,7 +157,7 @@ app.nav=(()=>{
 										}).submit();
 										}))
 							.append($(createInput({id:'reset btn',clazz:'', type:'reset'}))
-									.on('click',e=>{alert('하히');}))
+									.on('click',e=>{alert('reset');}))
 							;
 ;
 							
@@ -355,16 +371,69 @@ app.member=(()=>{
 		view=$.javascript()+'/view.js';
 		setContentView();
 	};
+	var admin=x=>{
+		
+	}
 	var setContentView=()=>{
 		$.getScript(view,()=>{
 			$('#container')
 			.html($(createDiv({id:'content',clazz:'container text-center'}))
 					.attr('style','width:80%;height:400px;margin:50px auto'));
-			$(loginOutBox('login-inner-table'))
-			.attr('style', 'margin:50px auto')
+			$(createDiv({id:'inbox-position',clazz:'container text-center'}))
+			.attr('style','width:100%;margin:50px auto')
 			.appendTo('#content');
 			$(loginInBox('login-inner-table'))
+			.attr('style','margin:0 auto')
 			.appendTo('#inbox-position');
+			$(createATag({id:'go_join_link',link:'#',val:'회원가입'}))
+			.appendTo('#content')
+			.on('click',e=>{
+				e.preventDefault();
+				$('#content').html(createJOIN({id:'',clazz:''}));
+				alert('회원가입!');
+				$('<button id="join_conform_btn">회원가입</button>')
+				.appendTo('#group-join-btns')
+				.on('click',e=>{
+					
+				});
+				$('<button id="join_clear">취소</button>')
+				.appendTo('#group-join-btns')
+				.on('click',e=>{
+					
+				});
+			});
+			$(createATag({id:'admin',link:'#',val:'관리자'}))
+			.appendTo('#content')
+			.on('click',e=>{
+				e.preventDefault();
+				if(confirm('직원맞습니까?')){
+					var p = prompt('직원 번호를 입력');
+					var pas = prompt('직원 번호를 비번입력');
+//					직원 번호 5자리 숫자로만 되어 있다
+					if(app.rgx.adminChecker(p)==='yes'){
+						alert('어드미 미닛')
+						$.ajax({
+							url:context+'/admin/'+p+'/login',
+							method:'POST',
+							data:JSON.stringify({admID:p,pass:pas}),
+							dataType:'json',
+							contentType:'application/json',
+							success : x =>{
+								alert('admin success : ' + x.admin.admID);
+								
+							},
+							error : (x,h,m)=>{
+								alert('로그인에서 에러발생 x='+x+', h='+h+', m='+m);
+							}
+						});
+					}else{
+						alert('adminChecker NO')
+					}
+				}else{
+					alert('직원만 접근 가능합니다')
+				}
+			});
+
 			$(createButton({id:"login-btn",clazz:"default",val:"Login"}))
 			.appendTo('#div-login-btn')
 			.on('click',e=>{
@@ -376,9 +445,9 @@ app.member=(()=>{
 	var login=()=>{
 		var userid=$('#index_input_id').val();
 		var jason={
-				'pass' : $('#index_input_password').val()};
+				pass : $('#index_input_password').val()};
 		$.ajax({
-			url:context+'/members/'+userid+'/login',
+			url:context+'/member/'+userid+'/login',
 			method:'POST',
 			data:JSON.stringify(jason),
 			dataType:'json',

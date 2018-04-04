@@ -3,6 +3,14 @@
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bitcamp.web.mapper.Mapper">
+	<select id="addImage" parameterType="com.bitcamp.web.domain.Image">
+    INSERT INTO IMAGE VALUES(${imageId},${imageId},${imageId},now())
+    </select>
+    <select id="selectAdmin" resultType="com.bitcamp.web.domain.Admin" parameterType="com.bitcamp.web.domain.Command">
+    SELECT * 
+    FROM ADMIN
+    WHERE ${id} LIKE #{data1} AND ${pass} LIKE #{data2} 
+    </select>
     <select id="selectAll" resultType="com.bitcamp.web.domain.Board" parameterType="com.bitcamp.web.domain.Command">
     SELECT * 
     FROM BOARD 
@@ -23,10 +31,17 @@
 	WHERE result.rownu >= #{iData1} ;
     </select>
     <select id="selectById" resultType="com.bitcamp.web.domain.Member" parameterType="com.bitcamp.web.domain.Command">
-    SELECT * FROM MEMBER WHERE ID LIKE #{data1} AND PASS LIKE #{data2}
+    SELECT * 
+    FROM MEMBER 
+    WHERE ID LIKE #{data1} AND PASS LIKE #{data2}
+    </select>
+    <select id="selectAdminCount" resultType="int" parameterType="com.bitcamp.web.domain.Command">
+    SELECT COUNT(*) FROM MEMBER WHERE ID LIKE #{data1} AND PASS LIKE #{data2}
     </select>
     <select id="exist" resultType="int" parameterType="com.bitcamp.web.domain.Command">
-    SELECT COUNT(*) FROM MEMBER WHERE ID LIKE #{data1} AND PASS LIKE #{data2}
+    SELECT COUNT(*)
+    FROM ${type}
+    WHERE ${id} LIKE #{data1} AND ${pass} LIKE #{data2} 
     </select>
     <delete id="deleteMember" parameterType="com.bitcamp.web.domain.Command"></delete>
 </mapper>

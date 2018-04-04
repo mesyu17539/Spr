@@ -1,3 +1,6 @@
+SELECT * FROM ADMIN;
+INSERT INTO ADMIN
+     VALUES ('1234');
 CREATE TABLE MEMBER
 (
    id         varchar(20),

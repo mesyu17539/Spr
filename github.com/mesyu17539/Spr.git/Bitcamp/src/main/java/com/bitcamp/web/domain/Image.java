@@ -5,8 +5,7 @@ import org.springframework.stereotype.Component;
 
 import lombok.Data;
 
-@Data
-@Component @Lazy
-public class Admin {
-	private String admID,admPass;
+@Component @Data @Lazy
+public class Image {
+	private String ImageID,filename,extension,regdate,userid;
 }
